@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Katzrin Guide · מדריך קצרין</title>
+  <meta name="description" content="Bilingual chatbot to help families and businesses move to Katzrin, Golan Heights." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo">🏔️</div>
+      <div>
+        <h1>Katzrin Guide <span class="he">· מדריך קצרין</span></h1>
+        <p class="tagline">Thinking of moving to Katzrin? Ask me anything · חושבים לעבור לקצרין? שאלו אותי הכול</p>
+      </div>
+    </header>
+
+    <section id="chat" class="chat" aria-live="polite">
+      <div class="msg bot">
+        <div class="bubble">
+          <span class="lang-note">💬 <strong>Write in English or Hebrew</strong> — I'll always reply in the same language you use.<br />
+          <span class="he-note">כתבו באנגלית או בעברית — אענה תמיד באותה שפה שבה תפנו אליי.</span></span>
+          <br /><br />
+          👋 Hi! I'm your guide to <strong>Katzrin</strong> — schools, neighborhoods, buying vs. renting, new homes, jobs, opening a business, forms for moving, and more.
+          <br /><br />
+          <span dir="rtl">שלום! אני המדריך שלכם ל<strong>קצרין</strong> — בתי ספר, שכונות, קנייה מול שכירות, בתים חדשים, עבודה, פתיחת עסק, טפסים למעבר ועוד.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="suggestions" id="suggestions">
+      <button class="chip">What are the schools like?</button>
+      <button class="chip">כמה עולה דירה בקצרין?</button>
+      <button class="chip">Is Katzrin safe?</button>
+      <button class="chip">איך פותחים עסק בקצרין?</button>
+    </div>
+
+    <form id="form" class="composer" autocomplete="off">
+      <input id="input" class="input" type="text" maxlength="1200"
+             placeholder="Ask about Katzrin… · שאלו על קצרין…" aria-label="Your message" />
+      <button id="send" class="send" type="submit" aria-label="Send">➤</button>
+    </form>
+    <p class="disclaimer">Answers are guidance from a knowledge base — always confirm prices, forms, and eligibility with official sources.</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
