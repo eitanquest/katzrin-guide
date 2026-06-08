@@ -190,7 +190,10 @@ const dayLimiter = rateLimit({
   message: { error: "daily_limit", message: "Daily limit reached. Please come back tomorrow." },
 });
 
-app.use(express.static(path.join(__dirname, "public")));
+// Serve the chat UI under /chat (so the public address is katzrin.ai/chat).
+// Root and a few common paths redirect there.
+app.get(["/", "/index.html"], (_req, res) => res.redirect(302, "/chat/"));
+app.use("/chat", express.static(path.join(__dirname, "public")));
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, model: ANSWER_MODEL, globalCountToday, dayKey });
