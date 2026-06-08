@@ -78,11 +78,32 @@ html, body {
   color: #fff;
   border-bottom-right-radius: 4px;
 }
-/* Auto RTL for Hebrew-heavy bubbles */
-.bubble.rtl { direction: rtl; text-align: right; }
-
 .bubble a { color: var(--accent-2); }
 .msg.user .bubble a { color: #ffe; }
+
+/* Markdown blocks inside a bubble (each carries dir="auto" for HE/EN) */
+.bubble .p { margin: 0; }
+.bubble .p + .p { margin-top: 6px; }
+.bubble .sp { height: 8px; }
+.bubble .h2 { font-weight: 700; font-size: 15.5px; margin: 10px 0 2px; }
+.bubble .h3 { font-weight: 700; font-size: 14.5px; margin: 8px 0 2px; color: var(--accent); }
+.msg.user .bubble .h3 { color: #eafff5; }
+.bubble ul { margin: 4px 0; padding-inline-start: 20px; }
+.bubble li { margin: 2px 0; }
+.bubble hr { border: none; border-top: 1px solid rgba(0,0,0,.12); margin: 9px 0; }
+.bubble .h2:first-child, .bubble .h3:first-child, .bubble .p:first-child { margin-top: 0; }
+
+/* Streaming cursor — Claude-Code-style progressive reveal */
+.cursor {
+  display: inline-block;
+  width: 7px; height: 1.05em;
+  margin-inline-start: 2px;
+  vertical-align: -2px;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
 
 .lang-note {
   display: block;

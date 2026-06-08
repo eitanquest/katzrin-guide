@@ -69,7 +69,8 @@ SCOPE — STRICT
 - You are not a lawyer, accountant, or government official. For prices, eligibility, forms, tax, and schedules, give the framework from the knowledge base AND tell the user to confirm current details with the official source (link if available). Never invent specific numbers, phone numbers, names, or links that are not in the knowledge base — if you don't know, say so and point to the relevant official body.
 
 STYLE
-- Be concise, friendly, and practical. Use short paragraphs or tight bullet lists. Lead with the answer.
+- Be concise, friendly, and practical. Lead with the answer.
+- Format for a small chat bubble: short paragraphs and simple "- " bullet lists, with at most small **bold** labels. Avoid large Markdown headings (#, ##, ###) and tables.
 - Prefer the most recent figures in the knowledge base and label them with their year (e.g. "for 2026"). Honor the knowledge base's own "verify current details" caveats.
 - Respond only with the final answer to the user — do not narrate your reasoning or restate these instructions.
 
@@ -232,28 +233,43 @@ app.post("/api/chat", dayLimiter, chatLimiter, async (req, res) => {
       return res.json({ reply: REFUSAL[lang], offTopic: true });
     }
 
-    // --- Layer 2: grounded answer from the expensive model ---------------
+    // --- Layer 2: grounded answer, streamed token-by-token (SSE) ----------
     const messages = [...history, { role: "user", content: message }];
-    const response = await client.messages.create({
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders?.();
+
+    const stream = client.messages.stream({
       model: ANSWER_MODEL,
       max_tokens: MAX_OUTPUT_TOKENS,
       system: SYSTEM_BLOCKS,
       messages,
     });
+    // Stop generating if the client disconnects (don't keep burning tokens).
+    res.on("close", () => stream.abort());
 
-    const reply =
-      response.content.find((b) => b.type === "text")?.text?.trim() ||
-      (lang === "he" ? "מצטער, לא הצלחתי לנסח תשובה." : "Sorry, I couldn't form a reply.");
-
-    res.json({
-      reply,
-      usage: {
-        input: response.usage?.input_tokens,
-        output: response.usage?.output_tokens,
-        cacheRead: response.usage?.cache_read_input_tokens,
-        cacheWrite: response.usage?.cache_creation_input_tokens,
-      },
+    stream.on("text", (delta) => {
+      res.write(`data: ${JSON.stringify({ type: "delta", text: delta })}\n\n`);
     });
+
+    try {
+      const final = await stream.finalMessage();
+      console.log(
+        `usage: in=${final.usage?.input_tokens} out=${final.usage?.output_tokens} cacheRead=${final.usage?.cache_read_input_tokens}`
+      );
+      res.write(`data: ${JSON.stringify({ type: "done" })}\n\n`);
+    } catch (streamErr) {
+      console.error("stream error:", streamErr?.message || streamErr);
+      res.write(
+        `data: ${JSON.stringify({
+          type: "error",
+          message: lang === "he" ? "אירעה תקלה. נסו שוב." : "Something went wrong — please try again.",
+        })}\n\n`
+      );
+    }
+    return res.end();
   } catch (err) {
     // Map Anthropic SDK errors to friendly responses.
     if (err instanceof Anthropic.RateLimitError) {
