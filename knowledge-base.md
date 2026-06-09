@@ -82,7 +82,7 @@ The market is rising fast as the town doubles in size; treat all prices as a mov
 
 **Renting / השכרה** — generally well below big-city rents; exact figures fluctuate, so the bot should point users to live listings.
 
-**Popular neighborhoods / שכונות מבוקשות:** Gamla (גמלא), Naveh (נווה), Kedma (קדמה), Afek (אפק), Batra (בתרה).
+**Neighborhoods / שכונות:** Seven built or under construction (per the municipality) — **Gamla (גמלא), Naveh (נווה), Kedma (קדמה), Afek (אפק), Batra (בתרה), Chen (חן), and the Jubilee Quarter (רובע היובל)** — with three more planned. Each is wrapped by a ring road with a green, shaded promenade at its center. Gamla/Naveh/Kedma/Afek/Batra are the established, sought-after ones; the town sits between Nahal Zavitan and Nahal Meshushim, facing Mt. Hermon and the Kinneret.
 
 **Where to check live listings:** Madlan (madlan.co.il), Yad2 (yad2.co.il, city code 4100), Madadirot, and local Golan agencies (e.g., Nadlan BaGolan, Yaad Nechasim/nadlangolan.com).
 
@@ -114,7 +114,7 @@ Katzrin is the employment hub for the whole central Golan, not just its own resi
 
 - **Main sectors:** tourism, education, agriculture, free professions, and food/beverage industry.
 - **Major employers / flagship industry:** Golan Heights Winery (יקבי רמת הגולן), Mey Eden mineral water bottling plant (מי עדן), Golan Olive Oil Mill (בית הבד), plus the Golan Antiquities Museum and tourism sites.
-- **Industrial park / אזור תעשייה קצרין:** large and expanding — ~40 dunams marketed in the last two years, active construction, lot development, infrastructure upgrades. Managed with support from the **Katzrin Development Company**.
+- **Industrial park / אזור תעשייה קצרין:** large and expanding — ~40 dunams marketed in recent years, with active construction, lot development, and infrastructure upgrades — a key local source of manufacturing/industry jobs.
 - **Research & academia / מחקר ואקדמיה:** Katzrin punches above its weight intellectually — home to the **Shamir Research Institute (מכון שמיר למחקר) / "The Golan Research Institute" (המכון לחקר הגולן)**, founded 1983 by the Ministry of Science, the Golan Regional Council, and the Katzrin Local Council under **University of Haifa** academic supervision. It runs applied research in **agriculture, ecology & environment, sociology & education, and cosmic-radiation monitoring**, and maintains the **Golan Archive** (library + files on Golan history, archaeology, settlement, water, nature). Together with **Ohalo Academic College** (§2), it makes Katzrin a regional research/education center — relevant for academic, scientific, and teaching careers.
 - **Employment center / לשכת התעסוקה:** located in the Eitan Commercial Center (מרכז מסחרי איתן). Regional jobs board: **golanjobs.co.il** (מרכז תעסוקה גולן).
 
@@ -123,10 +123,10 @@ Katzrin is the employment hub for the whole central Golan, not just its own resi
 ## 6. Business — Opening / Renting Commercial Space / עסקים — פתיחה והשכרה
 For entrepreneurs wanting to start or relocate a business to Katzrin:
 
-- **Katzrin Development Company / החברה לפיתוח קצרין (katsrin.co.il):** the key contact. Provides **free guidance and support** to entrepreneurs setting up in the industrial area; rents out offices, workstations, and lots/buildings in the industrial park (e.g., offices on "Humanity" St.).
+- **Where to start:** the **Katzrin Local Council business-licensing department (רישוי עסקים)** is the first stop — contact **Lee Porat, ☎ 04-697-2835**. For commercial or industrial space to rent/buy, check live local listings (Shishi BaGolan, Yad2) and the council; the town has an active **industrial park (אזור תעשייה)** plus the Eitan and Chutzot HaGolan commercial centers (§7).
 - **New commerce & employment complex:** a large new retail/employment hub is launching — the **"Delek Nechasim – Arazim – Mei Marom"** complex: thousands of m², hundreds of new jobs, dozens of leading brands, positioning Katzrin as a regional retail & leisure center. Anchor: **"Shuk Hertzel"** retail supermarket (thousands of m²).
 - **Business licensing / רישוי עסקים:** governed by the national Business Licensing Law (1968). Apply through the local council's business-licensing dept.; the authority must respond within ~45 days, approving bodies within ~90 days. Some business types need a license, others don't — the bot should triage by business type and link to gov.il licensing requirements + the council.
-- **Business directory:** katsrin.co.il (אלפון עסקים) and katsrin.com/business.
+- **Local business directory:** **katsrin.com/business** (אלפון עסקים) — a searchable list of Katzrin shops & services.
 
 ---
 
@@ -134,6 +134,7 @@ For entrepreneurs wanting to start or relocate a business to Katzrin:
 - **Eitan Commercial Center / מרכז מסחרי איתן** — central shopping hub (also houses the employment office).
 - **Chutzot HaGolan / חוצות הגולן** — commercial center at the town entrance between the industrial zone and the antiquities park; ~10 dunams, ~11,000 m² of retail & offices.
 - **New mega retail/employment complex** (see §6) — incoming, will significantly expand shopping options and bring national brands + a large supermarket.
+- **Local shops (sample, from katsrin.com/business):** booksellers (**Steimatzky**), neighborhood mini-markets with delivery (e.g., Omer Market), a bike shop (On Wheels), a plant nursery (Katzrin Nursery), gift/stationery/toy stores (Lily's, Everything Store), home & textile shops (Home Box, Home Design), printing/design (Lazard Design, Plot Plus, SmartFix), florists, and more — so day-to-day needs are covered in town. (Full searchable directory on the council site.)
 
 ---
 
@@ -171,14 +172,42 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 **Business forms (entrepreneurs):**
 - Business license application / בקשה לרישיון עסק (council).
 - Tax registration: open a tik at Mas Hachnasa + Maam (osek patur/murshe) + Bituach Leumi.
-- Industrial-area lease via the Katzrin Development Company.
+- Business licence via the council's licensing dept (רישוי עסקים — Lee Porat ☎ 04-697-2835).
 
 **Key contacts / official sites:**
-- Local council: **katsrin.com** (services, phonebook, social services). Citizen center **106 / 04-696-2536**.
+- Local council: **katsrin.com** (services, phonebook, social services). Citizen center **106 / 04-696-2536** (switchboard **04-696-9697**). See §10a for the full department directory.
 - Golan Regional Council: **golan.org.il**.
-- Development Company / industrial & business: **katsrin.co.il**.
+- Regional jobs board: **golanjobs.co.il**.
 - Rights/benefits reference: **kolzchut.org.il** (Kol-Zchut, has some English).
 - English-speaker olim guide: **Nefesh B'Nefesh** Katzrin community page (Anglo coordinators; Communities Facebook group).
+
+---
+
+## 10a. Official Municipal Contacts & e-Services / מועצה מקומית קצרין — קשר ושירותים מקוונים
+*(Scraped from the council site, katsrin.com — the most useful "where do I actually go" data.)*
+
+**Online "services in a click" (שירותים בקליק):** the council site offers digital self-service — **resident certificate (אישור תושב), business licensing, online appointment booking (תור בקליק), online payments, digital forms, freedom-of-information requests, emergency & security info,** and the Planning & Building Committee (הוועדה לתכנון ובנייה). Point newcomers here first for forms and appointments.
+
+**Phone directory / אלפון המועצה (verify before quoting — numbers change):**
+| Office | Phone |
+|--------|-------|
+| Switchboard / מרכזייה | 04-696-9697 |
+| Citizen center / מוקד 106 | 106 · 04-696-2536 · 050-405-4051 |
+| Council Head / CEO / ראש המועצה | 04-696-9610 |
+| Spokesperson / דובר | 04-696-9606 · 050-912-9111 |
+| Treasury / גזברות | 04-696-9632 |
+| Property tax (Milgam) / גבייה-ארנונה | 04-696-1402 |
+| Education / מחלקת חינוך | 04-696-9602 · 04-696-1305 |
+| Engineering / הנדסה | 04-696-9601 |
+| Social services / רווחה | 04-696-9646 |
+| Urban services & sanitation / שפ"ע | 04-696-9655 |
+| Business licensing / רישוי עסקים (Lee Porat) | 04-697-2835 |
+| Community center / מתנ"ס | 04-696-4111 |
+| Library / ספרייה | 04-696-9667 |
+
+**Urban-services office hours:** Sun & Tue **12:00–16:00**; Mon, Wed & Thu **08:30–12:30** (confirm per department).
+
+> ⚠️ Numbers/hours are from the council site and can change — always present them with "confirm on katsrin.com or by calling 106."
 
 ---
 
@@ -276,6 +305,7 @@ Beyond synagogues (§11), the social infrastructure newcomers actually use:
 - **Community center / מתנ"ס קצרין** — culture, youth & sport center (**2 branches**) running classes (חוגים) and programs for **all ages**, early-childhood through seniors. The hub of town social life.
 - **Youth movements / תנועות נוער:** **Bnei Akiva / בני עקיבא** (religious-Zionist, hundreds of local members), **Oz / עוז** (dati-leumi, grades 1–3), **Tzofim / Scouts**, plus a **religious youth club (מועדון נוער דתי)** with a sports hall. Secular and religious options both present.
 - **Seniors / אזרחים ותיקים:** an **enriched senior club (מועדון מועשר)** via the matnas, plus "supportive community" (קהילה תומכת) services — relevant given ~15.6% of residents are 65+.
+- **Council Social Services dept / מחלקת רווחה:** ~20 social workers covering families, children, youth, seniors, disability, immigrant absorption, addiction, and violence-prevention/protection. Head: **Rachel Moati**; main line **☎ 04-696-9646** (see §10a).
 - **Olim communities:** robust **Russian-speaking** services (≈⅓ of the town) and an **Anglo** community supported by Nefesh B'Nefesh coordinators + the municipal absorption dept. and Ulpan (see §2, §10).
 - **Social services:** the council's social-services department (katsrin.com) handles welfare, family, disability, and senior support.
 
@@ -361,7 +391,9 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 
 **Known conflicts / things to avoid stating as fact:**
 - Druze/Arab family counts (EN Wiki "30 Druze families" vs CBS ~0.1%). → say "a small number."
+- **Population figure:** CBS says **8,161** (Apr 2026); the council site (katsrin.com) says **~9,000** + "30% olim" and a vision of **20,000 within a decade / ≥400 units a year**. → quote CBS 8,161 as the official statistic; present the council's ~9,000 and 20k as the municipality's own/aspirational figures.
 - "Doubling to 25,000" is aspirational, not a current figure.
+- **Council phone numbers / office hours (§10a)** are from katsrin.com and change over time → always append "confirm on katsrin.com or call 106."
 - HMO coverage: confirmed **Clalit** clinic in town; do **not** assert Maccabi/Meuhedet/Leumit branches without checking — many specialist/hospital services are regional (Safed/Tiberias).
 - "Mehir Matara" unit counts and eligibility change per tender — link the official housing lottery.
 - **Crime statistics** not independently verified — describe the safe/tight-knit reputation, don't cite numbers.
@@ -373,7 +405,7 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 
 ## 22. Primary Sources / מקורות
 - [Katzrin – Wikipedia (EN)](https://en.wikipedia.org/wiki/Katzrin) · [קצרין – ויקיפדיה](https://he.wikipedia.org/wiki/קצרין)
-- [Katzrin Local Council – katsrin.com](https://katsrin.com/) · [Katzrin Development Company – katsrin.co.il](https://katsrin.co.il/)
+- [Katzrin Local Council – katsrin.com](https://katsrin.com/) · [About Katzrin (council)](https://katsrin.com/אודות-קצרין/) · [Council urban services](https://katsrin.com/שירותים-עירוניים/) · [Council phone directory](https://katsrin.com/phonebook/) · [Council social services](https://katsrin.com/שירותים-חברתיים/) · [Business directory](https://katsrin.com/business/category/5/)
 - [Golan Regional Council – golan.org.il](https://www.golan.org.il/) · [Golan jobs – golanjobs.co.il](https://www.golanjobs.co.il/)
 - [Nefesh B'Nefesh – Katzrin community guide](https://www.nbn.org.il/life-in-israel/community-and-housing/community-guide/katzrin/)
 - Education: [HomEE – Katzrin education](https://www.homee.co.il/קצרין/חינוך/) · [Ynet – education in Katzrin](https://www.ynet.co.il/article/h1nueztks) · [Ohalo Academic College of Education & Sport (CHE)](https://che.org.il/en/place/ohalo-academic-college-of-education-and-sport-in-katzrin-2/) · [מכללת אוהלו – ויקיפדיה](https://he.wikipedia.org/wiki/מכללת_אוהלו)

@@ -1,19 +1,46 @@
-// Katzrin Guide — frontend chat logic (streaming + Markdown rendering)
+// Katzrin Guide — ChatGPT/Gemini-style UI with streaming + Markdown rendering
+const app = document.getElementById("app");
 const chat = document.getElementById("chat");
-const form = document.getElementById("form");
-const input = document.getElementById("input");
-const send = document.getElementById("send");
-const suggestions = document.getElementById("suggestions");
+const hero = document.getElementById("hero");
+const chips = document.getElementById("chips");
+const heroForm = document.getElementById("heroForm");
+const heroInput = document.getElementById("heroInput");
+const bottomForm = document.getElementById("bottomForm");
+const bottomInput = document.getElementById("bottomInput");
+const ph = document.getElementById("ph");
 
 const history = [];
 const MAX_CLIENT_HISTORY = 8;
+let started = false;
 
 const hebrew = (s) => /[֐-׿]/.test(s);
 
-// --- Minimal, safe Markdown → HTML for chat bubbles -----------------------
-// Handles: # / ## / ### headings, "- "/"* " bullets, --- rules, **bold**,
-// *italics*, links, and paragraphs. Every block gets dir="auto" so Hebrew
-// lines align RTL and English lines LTR within the same bubble.
+// ---- Fading bilingual placeholder ("Ask a question about Katzrin" ⇄ Hebrew) ----
+const PLACEHOLDERS = [
+  { text: "Ask a question about Katzrin", dir: "ltr" },
+  { text: "שאלו שאלה על קצרין", dir: "rtl" },
+];
+let phIdx = 0;
+function paintPh() {
+  ph.textContent = PLACEHOLDERS[phIdx].text;
+  ph.style.direction = PLACEHOLDERS[phIdx].dir;
+  ph.style.textAlign = PLACEHOLDERS[phIdx].dir === "rtl" ? "right" : "left";
+}
+paintPh();
+setInterval(() => {
+  if (heroInput.value) return;          // don't cycle while typing
+  ph.classList.add("hide");             // fade out
+  setTimeout(() => {
+    phIdx = (phIdx + 1) % PLACEHOLDERS.length;
+    paintPh();
+    ph.classList.remove("hide");        // fade in
+  }, 450);
+}, 2800);
+heroInput.addEventListener("input", () => {
+  ph.classList.toggle("hide", heroInput.value.length > 0);
+});
+
+// ---- Minimal, safe Markdown → HTML (per-line dir="auto" for HE/EN) ----
 function escapeHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -27,9 +54,7 @@ function renderMd(src) {
   const lines = src.split("\n");
   let html = "";
   let inList = false;
-  const closeList = () => {
-    if (inList) { html += "</ul>"; inList = false; }
-  };
+  const closeList = () => { if (inList) { html += "</ul>"; inList = false; } };
   for (const raw of lines) {
     const line = raw.replace(/\s+$/, "");
     if (/^\s*[-*]\s+/.test(line)) {
@@ -61,7 +86,6 @@ function addMessage(text, who) {
   chat.scrollTop = chat.scrollHeight;
   return bubble;
 }
-
 function showTyping() {
   const wrap = document.createElement("div");
   wrap.className = "msg bot typing";
@@ -72,14 +96,12 @@ function showTyping() {
 }
 
 const CURSOR = '<span class="cursor"></span>';
-
 async function streamInto(bubble, res) {
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
   let acc = "";
   const nearBottom = () => chat.scrollHeight - chat.scrollTop - chat.clientHeight < 120;
-
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
@@ -100,20 +122,26 @@ async function streamInto(bubble, res) {
       } else if (evt.type === "error") {
         acc += (acc ? "\n\n" : "") + (evt.message || "…");
       }
-      // "done" → fall through; cursor removed after the loop
     }
   }
-  bubble.innerHTML = renderMd(acc); // final render, no cursor
+  bubble.innerHTML = renderMd(acc);
   return acc;
 }
 
+function enterChatMode() {
+  if (started) return;
+  started = true;
+  app.classList.remove("state-empty");
+  app.classList.add("state-chat");
+}
+
 async function sendMessage(text) {
+  enterChatMode();
   addMessage(text, "user");
   history.push({ role: "user", content: text });
-  input.value = "";
-  send.disabled = true;
-  input.disabled = true;
-  suggestions.style.display = "none";
+  heroInput.value = "";
+  bottomInput.value = "";
+  setBusy(true);
   const typing = showTyping();
 
   try {
@@ -122,7 +150,6 @@ async function sendMessage(text) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: text, history: history.slice(-MAX_CLIENT_HISTORY) }),
     });
-
     const ctype = res.headers.get("content-type") || "";
     if (ctype.includes("text/event-stream") && res.body) {
       typing.remove();
@@ -130,37 +157,40 @@ async function sendMessage(text) {
       const reply = await streamInto(bubble, res);
       if (reply) history.push({ role: "assistant", content: reply });
     } else {
-      // JSON path: validation errors, rate limits, or off-topic refusals
       const data = await res.json().catch(() => ({}));
       typing.remove();
       const reply =
-        data.reply ||
-        data.message ||
+        data.reply || data.message ||
         (hebrew(text) ? "מצטער, משהו השתבש. נסו שוב." : "Sorry, something went wrong. Please try again.");
       addMessage(reply, "bot");
       if (data.reply && !data.offTopic) history.push({ role: "assistant", content: data.reply });
     }
   } catch (e) {
     typing.remove();
-    addMessage(
-      hebrew(text) ? "אין חיבור לשרת. נסו שוב." : "Couldn't reach the server. Please try again.",
-      "bot"
-    );
+    addMessage(hebrew(text) ? "אין חיבור לשרת. נסו שוב." : "Couldn't reach the server. Please try again.", "bot");
   } finally {
-    send.disabled = false;
-    input.disabled = false;
-    input.focus();
+    setBusy(false);
+    bottomInput.focus();
   }
 }
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const text = input.value.trim();
-  if (text) sendMessage(text);
-});
+function setBusy(b) {
+  document.querySelectorAll(".send").forEach((el) => (el.disabled = b));
+  bottomInput.disabled = b;
+  heroInput.disabled = b;
+}
 
-suggestions.addEventListener("click", (e) => {
+function handleSubmit(inputEl) {
+  return (e) => {
+    e.preventDefault();
+    const text = inputEl.value.trim();
+    if (text) sendMessage(text);
+  };
+}
+heroForm.addEventListener("submit", handleSubmit(heroInput));
+bottomForm.addEventListener("submit", handleSubmit(bottomInput));
+chips.addEventListener("click", (e) => {
   if (e.target.classList.contains("chip")) sendMessage(e.target.textContent.trim());
 });
 
-input.focus();
+heroInput.focus();

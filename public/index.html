@@ -8,41 +8,45 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="header">
-      <div class="logo">🏔️</div>
-      <div>
-        <h1>Katzrin Guide <span class="he">· מדריך קצרין</span></h1>
-        <p class="tagline">Thinking of moving to Katzrin? Ask me anything · חושבים לעבור לקצרין? שאלו אותי הכול</p>
-      </div>
+  <main class="app state-empty" id="app">
+    <header class="topbar">
+      <span class="logo">🏔️</span>
+      <span class="brand">Katzrin&nbsp;Guide <span class="he">· מדריך קצרין</span></span>
     </header>
 
-    <section id="chat" class="chat" aria-live="polite">
-      <div class="msg bot">
-        <div class="bubble">
-          <span class="lang-note">💬 <strong>Write in English or Hebrew</strong> — I'll always reply in the same language you use.<br />
-          <span class="he-note">כתבו באנגלית או בעברית — אענה תמיד באותה שפה שבה תפנו אליי.</span></span>
-          <br /><br />
-          👋 Hi! I'm your guide to <strong>Katzrin</strong> — schools, neighborhoods, buying vs. renting, new homes, jobs, opening a business, forms for moving, and more.
-          <br /><br />
-          <span dir="rtl">שלום! אני המדריך שלכם ל<strong>קצרין</strong> — בתי ספר, שכונות, קנייה מול שכירות, בתים חדשים, עבודה, פתיחת עסק, טפסים למעבר ועוד.</span>
+    <!-- EMPTY STATE: centered, ChatGPT/Gemini-style -->
+    <section class="hero" id="hero">
+      <div class="hero-logo">🏔️</div>
+      <h1 class="hero-title">Katzrin Guide <span class="he">· מדריך קצרין</span></h1>
+      <p class="hero-sub">Your bilingual guide to moving to Katzrin.</p>
+
+      <form class="composer hero-composer" id="heroForm" autocomplete="off">
+        <div class="input-wrap">
+          <span class="ph" id="ph" aria-hidden="true"></span>
+          <input id="heroInput" class="input" type="text" maxlength="1200" aria-label="Your message" />
         </div>
+        <button class="send" type="submit" aria-label="Send">➤</button>
+      </form>
+
+      <div class="chips" id="chips">
+        <button class="chip">What are the schools like?</button>
+        <button class="chip">כמה עולה דירה בקצרין?</button>
+        <button class="chip">Is Katzrin safe?</button>
+        <button class="chip">איך פותחים עסק בקצרין?</button>
       </div>
     </section>
 
-    <div class="suggestions" id="suggestions">
-      <button class="chip">What are the schools like?</button>
-      <button class="chip">כמה עולה דירה בקצרין?</button>
-      <button class="chip">Is Katzrin safe?</button>
-      <button class="chip">איך פותחים עסק בקצרין?</button>
-    </div>
+    <!-- CHAT STATE: messages + bottom bar -->
+    <section class="chat" id="chat" aria-live="polite"></section>
 
-    <form id="form" class="composer" autocomplete="off">
-      <input id="input" class="input" type="text" maxlength="1200"
-             placeholder="Ask about Katzrin… · שאלו על קצרין…" aria-label="Your message" />
-      <button id="send" class="send" type="submit" aria-label="Send">➤</button>
-    </form>
-    <p class="disclaimer">Answers are guidance from a knowledge base — always confirm prices, forms, and eligibility with official sources.</p>
+    <div class="bottombar" id="bottombar">
+      <form class="composer" id="bottomForm" autocomplete="off">
+        <input id="bottomInput" class="input" type="text" maxlength="1200"
+               placeholder="Ask about Katzrin…  ·  שאלו על קצרין…" aria-label="Your message" />
+        <button class="send" type="submit" aria-label="Send">➤</button>
+      </form>
+      <p class="disclaimer">Guidance from a knowledge base — confirm prices, forms &amp; eligibility with official sources.</p>
+    </div>
   </main>
 
   <script src="app.js"></script>
