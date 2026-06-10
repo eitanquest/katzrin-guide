@@ -39,7 +39,7 @@ html, body {
   font-weight: 600;
   border-bottom: 1px solid transparent;
 }
-.topbar .logo { font-size: 20px; }
+.topbar .logo { height: 30px; width: auto; display: block; }
 .topbar .brand .he { color: var(--accent); font-weight: 600; }
 .state-chat .topbar { border-bottom-color: var(--line); }
 
@@ -55,11 +55,10 @@ html, body {
   text-align: center;
 }
 .hero-logo {
-  font-size: 46px;
-  width: 78px; height: 78px;
-  display: grid; place-items: center;
-  background: var(--field);
-  border-radius: 20px;
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  display: block;
 }
 .hero-title { font-size: 26px; font-weight: 700; margin: 4px 0 0; }
 .hero-title .he { color: var(--accent); }
