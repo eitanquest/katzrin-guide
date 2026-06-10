@@ -10,6 +10,7 @@ Compiled June 2026. Figures are approximate and shift quickly — the town is in
 
 - **Name:** Katzrin / קצרין (also transliterated Qatzrin/Qasrin). Nicknamed **"The Capital of the Golan" / "בירת הגולן."**
 - **Status:** Local council (מועצה מקומית), Northern District. The only urban town in the Golan; the Golan Regional Council (מועצה אזורית גולן) is administered from here (the regional council governs the surrounding kibbutzim/moshavim — a *separate* body from the Katzrin local council).
+- **Mayor / head of council (ראש המועצה):** **Yehuda Dua / יהודה דואה** (current, since the 2024 municipal elections; his predecessor was Dimi Apartsev / דימי אפרצב). **CEO (מנכ"ל המועצה):** Yshi Libstein / ישי ליבשטיין. *(Elected/appointed roles — confirm after each municipal election, next due ~2029.)*
 - **Founded:** July 1977 (decision made under PM Golda Meir's government, 1973; first garin organized 1975). Inaugurated 24 Jan 1978; declared a local council in April 1979. Built next to **Ancient Katzrin**, a Jewish Talmudic-era village destroyed by the 749 CE earthquake.
 - **Population:** **8,161** (Israel CBS estimate, April 2026; ~8,126 Israeli citizens), ranked ~200th nationally among local authorities. Second-largest locality in the Golan after Majdal Shams; the largest Israeli town there.
 - **Elevation / setting:** ~300–370 m above sea level at the entrance to the Golan plateau. Sea of Galilee (Kinneret) to the south, Mt. Hermon to the north, Upper Galilee to the west. Known for sweeping views and a green, quiet, mountain-town feel.
@@ -193,7 +194,8 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 |--------|-------|
 | Switchboard / מרכזייה | 04-696-9697 |
 | Citizen center / מוקד 106 | 106 · 04-696-2536 · 050-405-4051 |
-| Council Head / CEO / ראש המועצה | 04-696-9610 |
+| Council Head (Mayor) / ראש המועצה — Yehuda Dua | 04-696-9610 |
+| CEO / מנכ"ל — Yshi Libstein | 04-696-9610 |
 | Spokesperson / דובר | 04-696-9606 · 050-912-9111 |
 | Treasury / גזברות | 04-696-9632 |
 | Property tax (Milgam) / גבייה-ארנונה | 04-696-1402 |
@@ -379,6 +381,7 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 - Nature hubs: Yehudiya, Meshushim Pool, Zavitan, Gamla (Israel's highest waterfall ~51 m), Hermon, Kinneret.
 - Land: most Israeli land is ISA (רמ"י) leasehold; Katzrin lots marketed via ISA tenders.
 - Shamir/Golan Research Institute (est. 1983, Univ. of Haifa-affiliated, in Katzrin); Golan Heights Winery (est. 1983) & boutique wineries (Pelter/Matar); Ein Zivan farmers' market.
+- Mayor/head of council: **Yehuda Dua / יהודה דואה** (per official council site, 2026; predecessor Dimi Apartsev). Elected role — re-verify after municipal elections.
 
 **Medium confidence (single source / promotional / fast-changing — present with a "verify" caveat):**
 - Specific apartment/house **prices** (market moving fast; always link live listings).
