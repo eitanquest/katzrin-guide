@@ -227,7 +227,7 @@
   .tnode.steel .tell{background:var(--steel)} .tnode.ochre .tell{background:var(--ochre)}
   .tnode.tn-ls{inset-inline-start:2%} .tnode.tn-rs{inset-inline-end:2%}
   @keyframes tellblink{0%,100%{opacity:.3}50%{opacity:1}}
-  .thub{position:absolute;z-index:3;width:37%;aspect-ratio:1;border-radius:50%;inset-inline-start:50%;top:50%;transform:translate(-50%,-50%);
+  .thub{position:absolute;z-index:3;width:37%;aspect-ratio:1;border-radius:50%;inset-inline-start:31.5%;top:calc(50% - 18.5%);
     display:grid;place-items:center;text-align:center;padding:0 5%;
     background:radial-gradient(circle at 50% 40%,#fff 0%,#f6efe4 78%);
     border:1.5px solid var(--accent);
@@ -458,7 +458,10 @@
     .tnode.tn-ls{inset-inline-start:3.2%} .tnode.tn-rs{inset-inline-end:3.2%}
     .tnode .nm{font-size:13px}
     .tnode .rl{font-size:8px;letter-spacing:.05em}
-    .thub{width:32%}
+    .thub{inset-inline-start:34%;width:32%}
+    .thub .hb-n{font-size:15px;white-space:normal;line-height:1.06}
+    .thub .hb-s{font-size:7px}
+    .thub .hb-k{font-size:8px}
     .hero-meta{gap:14px 18px}
     .brand{font-size:19px}
     .brand-mark{height:23px;margin-inline-end:6px}
