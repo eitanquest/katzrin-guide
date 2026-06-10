@@ -172,7 +172,9 @@ async function isOnTopic(message, history) {
 // ---------------------------------------------------------------------------
 const app = express();
 app.set("trust proxy", 1); // correct client IPs behind a proxy (Railway, etc.)
-app.use(helmet());
+// CSP/COEP off so the marketing site's inline styles/scripts, Google Fonts and
+// YouTube embed render; other helmet protections stay on.
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(express.json({ limit: "16kb" })); // hard cap on request body size
 
 const chatLimiter = rateLimit({
@@ -190,10 +192,10 @@ const dayLimiter = rateLimit({
   message: { error: "daily_limit", message: "Daily limit reached. Please come back tomorrow." },
 });
 
-// Serve the chat UI under /chat (so the public address is katzrin.ai/chat).
-// Root and a few common paths redirect there.
-app.get(["/", "/index.html"], (_req, res) => res.redirect(302, "/chat/"));
+// Chat bot UI under /chat (katzrin.ai/chat).
 app.use("/chat", express.static(path.join(__dirname, "public")));
+// Marketing website (Katzrin.AI) at the root (katzrin.ai/).
+app.use(express.static(path.join(__dirname, "site")));
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, model: ANSWER_MODEL, globalCountToday, dayKey });
