@@ -6,6 +6,9 @@
 <title>עוזרי AI לעסקים ברמת הגולן | Katzrin.AI — סוכני בינה מלאכותית לעסק</title>
 <meta name="description" content="Katzrin.AI בונה עוזרי AI לעסקים — סוכנים חכמים שעובדים בשבילכם על העבודה השוחקת. אימוץ Claude, אוטומציה ובינה מלאכותית לעסקים, יזמים ורשויות ברמת הגולן, קצרין ובכל ישראל. מותאם לעברית מהיסוד." />
 <link rel="canonical" href="https://katzrin.ai/" />
+<link rel="alternate" hreflang="he" href="https://katzrin.ai/he" />
+<link rel="alternate" hreflang="en" href="https://katzrin.ai/en" />
+<link rel="alternate" hreflang="x-default" href="https://katzrin.ai/" />
 <meta name="keywords" content="עוזרי AI, סוכני AI, בינה מלאכותית לעסקים, אוטומציה לעסקים, Claude, רמת הגולן, קצרין, ישראל, AI assistants, AI agents for business, Golan Heights, Katzrin" />
 <meta name="author" content="Katzrin.AI" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -1225,7 +1228,7 @@
 <section class="section about" id="about">
   <div class="wrap">
     <div class="about-grid">
-      <img id="founder" src="founder.webp" alt="Eitan Ben Avraham — Katzrin.AI" />
+      <img id="founder" src="/founder.webp" alt="Eitan Ben Avraham — Katzrin.AI" />
       <div>
         <span class="eyebrow"><span class="num">07</span><span class="dot"></span><span class="t he">עליי</span><span class="t en">ABOUT</span></span>
         <h2 class="section-h2" style="max-width:16ch"><span class="t he">בונה עם Claude, מרמת הגולן</span><span class="t en">Building with Claude, from the Golan</span></h2>
@@ -1356,10 +1359,19 @@
     btns.forEach(b=>b.classList.toggle('on', b.dataset.set===lang));
     try{ localStorage.setItem('katzrin_lang', lang); }catch(e){}
   }
-  btns.forEach(b=>b.addEventListener('click', ()=>setLang(b.dataset.set)));
-  let saved = 'he';
+  function langFromPath(){
+    var p = location.pathname.toLowerCase().replace(/\/+$/,'');
+    if (p === '/en') return 'en';
+    if (p === '/he') return 'he';
+    return null;
+  }
+  btns.forEach(b=>b.addEventListener('click', ()=>{
+    setLang(b.dataset.set);
+    try{ history.replaceState(null, '', '/' + b.dataset.set); }catch(e){}
+  }));
+  var saved = 'he';
   try{ saved = localStorage.getItem('katzrin_lang') || 'he'; }catch(e){}
-  setLang(saved);
+  setLang(langFromPath() || saved);
 
   // smooth scroll for in-page anchors
   document.querySelectorAll('a[href^="#"]').forEach(a=>{

@@ -194,6 +194,8 @@ const dayLimiter = rateLimit({
 
 // Chat bot UI under /chat (katzrin.ai/chat).
 app.use("/chat", express.static(path.join(__dirname, "public")));
+// Language-specific entry points for the marketing site (path drives language).
+app.get(["/he", "/en"], (_req, res) => res.sendFile(path.join(__dirname, "site", "index.html")));
 // Marketing website (Katzrin.AI) at the root (katzrin.ai/).
 app.use(express.static(path.join(__dirname, "site")));
 
