@@ -227,7 +227,7 @@
   .tnode.steel .tell{background:var(--steel)} .tnode.ochre .tell{background:var(--ochre)}
   .tnode.tn-ls{inset-inline-start:2%} .tnode.tn-rs{inset-inline-end:2%}
   @keyframes tellblink{0%,100%{opacity:.3}50%{opacity:1}}
-  .thub{position:absolute;z-index:3;width:37%;aspect-ratio:1;border-radius:50%;inset-inline-start:31.5%;top:calc(50% - 18.5%);
+  .thub{position:absolute;z-index:3;width:37%;aspect-ratio:1;border-radius:50%;inset-inline-start:50%;top:50%;transform:translate(-50%,-50%);
     display:grid;place-items:center;text-align:center;padding:0 5%;
     background:radial-gradient(circle at 50% 40%,#fff 0%,#f6efe4 78%);
     border:1.5px solid var(--accent);
@@ -343,7 +343,8 @@
   .faq-list .ans{padding:0 4px 26px;font-size:15.5px;line-height:1.62;color:var(--ink-soft);max-width:74ch;text-wrap:pretty}
 
   /* ---------- 01 overload: inbox storm ---------- */
-  .overload-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;margin-top:10px}
+  .overload-grid{display:grid;grid-template-columns:1.05fr .95fr;grid-template-rows:auto 1fr;grid-template-areas:"head storm" "body storm";column-gap:50px;row-gap:0;align-items:start;margin-top:10px}
+  .ov-head{grid-area:head}.storm{grid-area:storm;align-self:center}.ov-body{grid-area:body;align-self:start}
   .storm{position:relative;aspect-ratio:1/.9;min-height:330px;overflow:clip}
   .storm .scount{position:absolute;top:0;inset-inline-end:6px;font-family:"JetBrains Mono",monospace;
     font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;z-index:1}
@@ -435,7 +436,7 @@
   @media (max-width:900px){
     .dash-body{grid-template-columns:repeat(2,1fr)}
     .dwid.span2{grid-column:span 2}
-    .overload-grid{grid-template-columns:1fr;gap:34px}
+    .overload-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto;grid-template-areas:"head" "storm" "body";gap:24px}
     .storm{max-width:440px;margin:0 auto;width:100%}
     .trust-grid{grid-template-columns:repeat(2,1fr)}
     .hero-grid,.case-intro,.about-grid{grid-template-columns:1fr;gap:36px}
@@ -457,7 +458,7 @@
     .tnode.tn-ls{inset-inline-start:3.2%} .tnode.tn-rs{inset-inline-end:3.2%}
     .tnode .nm{font-size:13px}
     .tnode .rl{font-size:8px;letter-spacing:.05em}
-    .thub{inset-inline-start:34%;width:32%}
+    .thub{width:32%}
     .hero-meta{gap:14px 18px}
     .brand{font-size:19px}
     .brand-mark{height:23px;margin-inline-end:6px}
@@ -804,25 +805,10 @@
 <section class="section" id="overload">
   <div class="wrap">
     <div class="overload-grid">
-      <div>
+      <div class="ov-head">
         <span class="eyebrow"><span class="num">01</span><span class="dot"></span><span class="t he">העומס</span><span class="t en">THE OVERLOAD</span></span>
         <h2 class="section-h2"><span class="t he">הכול רץ לכם בראש?</span><span class="t en">Running everything from your head?</span></h2>
-        <p class="lede" style="margin-top:20px">
-          <span class="t he">וואטסאפים, מיילים, פגישות, סטטוס פרויקטים, שכר, תמחור, מעקבים וניירת. אתם נמתחים דק בין עשרים משימות — ובסוף היום הדברים החשובים נדחים שוב למחר.</span>
-          <span class="t en">WhatsApps, emails, meetings, project statuses, payroll, pricing, follow-ups, and admin. You're stretched thin across twenty tasks — and the important things get pushed to tomorrow, again.</span>
-        </p>
-        <div class="chips">
-          <span class="chip"><span class="t he">וואטסאפים</span><span class="t en">WhatsApps</span></span>
-          <span class="chip"><span class="t he">מיילים</span><span class="t en">Emails</span></span>
-          <span class="chip"><span class="t he">פגישות</span><span class="t en">Meetings</span></span>
-          <span class="chip"><span class="t he">סטטוס פרויקטים</span><span class="t en">Project status</span></span>
-          <span class="chip"><span class="t he">שכר</span><span class="t en">Payroll</span></span>
-          <span class="chip"><span class="t he">תמחור</span><span class="t en">Pricing</span></span>
-          <span class="chip"><span class="t he">מעקבים</span><span class="t en">Follow-ups</span></span>
-          <span class="chip"><span class="t he">ניירת ואדמיניסטרציה</span><span class="t en">Admin</span></span>
-        </div>
       </div>
-
       <div class="storm" aria-hidden="true">
         <span class="scount"><span class="t he">23 לא נקראו</span><span class="t en">23 unread</span></span>
         <div class="scard s-wa" style="top:2%;inset-inline-start:1%" data-depth="110" data-dx="16" data-rot="-4deg">
@@ -851,6 +837,23 @@
           <span class="st">!</span>
         </div>
       </div>
+      <div class="ov-body">
+        <p class="lede" style="margin-top:20px">
+          <span class="t he">וואטסאפים, מיילים, פגישות, סטטוס פרויקטים, שכר, תמחור, מעקבים וניירת. אתם נמתחים דק בין עשרים משימות — ובסוף היום הדברים החשובים נדחים שוב למחר.</span>
+          <span class="t en">WhatsApps, emails, meetings, project statuses, payroll, pricing, follow-ups, and admin. You're stretched thin across twenty tasks — and the important things get pushed to tomorrow, again.</span>
+        </p>
+        <div class="chips">
+          <span class="chip"><span class="t he">וואטסאפים</span><span class="t en">WhatsApps</span></span>
+          <span class="chip"><span class="t he">מיילים</span><span class="t en">Emails</span></span>
+          <span class="chip"><span class="t he">פגישות</span><span class="t en">Meetings</span></span>
+          <span class="chip"><span class="t he">סטטוס פרויקטים</span><span class="t en">Project status</span></span>
+          <span class="chip"><span class="t he">שכר</span><span class="t en">Payroll</span></span>
+          <span class="chip"><span class="t he">תמחור</span><span class="t en">Pricing</span></span>
+          <span class="chip"><span class="t he">מעקבים</span><span class="t en">Follow-ups</span></span>
+          <span class="chip"><span class="t he">ניירת ואדמיניסטרציה</span><span class="t en">Admin</span></span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -937,6 +940,10 @@
       </div>
     </div>
 
+    <div class="case-video">
+      <iframe src="https://www.youtube-nocookie.com/embed/D3C1xKIJWMc" title="Case study video" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
     <div class="agents">
       <article class="agent a1">
         <span class="badge">FRONT DOOR</span>
@@ -961,9 +968,6 @@
       </article>
     </div>
 
-    <div class="case-video">
-      <iframe src="https://www.youtube-nocookie.com/embed/D3C1xKIJWMc" title="Case study video" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy"></iframe>
-    </div>
 
     <div class="band">
         <svg class="moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
