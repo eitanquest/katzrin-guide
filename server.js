@@ -206,7 +206,16 @@ app.get("/api/health", (_req, res) => {
 // OSRM (driving routes/ETA). No API keys required for either service.
 // ---------------------------------------------------------------------------
 app.get("/are-we-there-yet", (_req, res) => res.redirect(302, "/awty/"));
-app.use("/awty", express.static(path.join(__dirname, "public-awty")));
+// The app is tiny; disable caching entirely so phones always get the latest
+// version instead of freezing on a stale app.js after a deploy.
+app.use(
+  "/awty",
+  express.static(path.join(__dirname, "public-awty"), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-store, must-revalidate"),
+  })
+);
 
 const awtyLimiter = rateLimit({
   windowMs: 60 * 1000,
