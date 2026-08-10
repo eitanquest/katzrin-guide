@@ -258,7 +258,7 @@ await sleep(5000);
 try {
   const res = await fetch(SITE_CHECK_URL, { redirect: "follow" });
   const html = await res.text();
-  const ok = res.ok && html.includes("Are We There Yet");
+  const ok = res.ok && html.includes("Are We There Yet") && html.includes("start-input");
   console.log(`Site check ${SITE_CHECK_URL}: HTTP ${res.status}, app present: ${ok}`);
   if (!ok) process.exit(1);
   console.log("LIVE ✔ — katzrin.ai/awty is serving the app.");
