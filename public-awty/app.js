@@ -124,15 +124,63 @@
     ul.hidden = false;
   }
 
+  // ---------- persistence (survive a page refresh) ----------
+
+  const TRIP_KEY = "awty:trip";      // the in-progress trip, for auto-resume
+  const RECENTS_KEY = "awty:recents"; // last destinations, for one-tap restart
+
+  function saveTrip() {
+    try {
+      localStorage.setItem(
+        TRIP_KEY,
+        JSON.stringify({
+          dest: state.dest,
+          start: startPlace,
+          tripStartMs: state.tripStartMs,
+          baselineMeters: state.baselineMeters,
+        })
+      );
+    } catch { /* private mode etc. — just no resume */ }
+  }
+
+  function clearTrip() {
+    try { localStorage.removeItem(TRIP_KEY); } catch {}
+  }
+
+  function addRecent(place) {
+    try {
+      const recents = JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]")
+        .filter((p) => p.name !== place.name);
+      recents.unshift({ name: place.name, lat: place.lat, lon: place.lon });
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(recents.slice(0, 6)));
+    } catch {}
+  }
+
+  function renderRecents() {
+    let recents = [];
+    try { recents = JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]"); } catch {}
+    const ul = $("recents");
+    ul.innerHTML = "";
+    $("recents-label").hidden = ul.hidden = !recents.length;
+    for (const p of recents) {
+      const li = document.createElement("li");
+      li.textContent = `📍 ${shortName(p.name)}`;
+      li.addEventListener("click", () => startTrip(p));
+      ul.appendChild(li);
+    }
+  }
+
   // ---------- trip ----------
 
-  function startTrip(place) {
+  function startTrip(place, saved) {
     state.dest = place;
-    state.baselineMeters = null;
+    state.baselineMeters = saved?.baselineMeters ?? null;
     state.remainingMeters = null;
     state.arrivalAtMs = null;
-    state.tripStartMs = Date.now();
+    state.tripStartMs = saved?.tripStartMs ?? Date.now();
     state.roughEstimate = false;
+    addRecent(place);
+    saveTrip();
 
     $("trip-dest-name").textContent = shortName(place.name);
     $("trip-from").textContent = startPlace
@@ -142,12 +190,14 @@
 
     // With a chosen starting point, the WHOLE start→destination route is 100%,
     // so opening the app mid-trip shows real progress instead of 0%.
-    if (startPlace) {
+    // (A restored trip already has its baseline — don't refetch.)
+    if (startPlace && state.baselineMeters === null) {
       fetch(`api/route?from=${startPlace.lat},${startPlace.lon}&to=${place.lat},${place.lon}`)
         .then((r) => (r.ok ? r.json() : null))
         .then((r) => {
           if (r) {
             state.baselineMeters = Math.max(r.distanceMeters, state.remainingMeters || 0, 1);
+            saveTrip();
             tick();
           }
         })
@@ -224,6 +274,7 @@
     // route longer than the baseline, re-base so the bar never goes backwards past 0.
     if (state.baselineMeters === null || distanceMeters > state.baselineMeters * 1.1) {
       state.baselineMeters = Math.max(distanceMeters, 1);
+      saveTrip();
     }
 
     $("trip-status").textContent = rough
@@ -272,6 +323,7 @@
     const mins = Math.round((Date.now() - state.tripStartMs) / 60000);
     $("arrived-detail").textContent =
       `${shortName(state.dest.name)} — trip took ${mins < 1 ? "less than a minute" : `${mins} min`}`;
+    clearTrip();
     stopTracking();
     show("arrived");
     confetti();
@@ -288,6 +340,8 @@
 
   function resetToSetup() {
     stopTracking();
+    clearTrip();
+    renderRecents();
     startPlace = null;
     $("results").hidden = true;
     $("start-results").hidden = true;
@@ -353,4 +407,16 @@
       host.appendChild(s);
     }
   }
+
+  // ---------- boot: show recents, and auto-resume a trip after a refresh ----
+
+  renderRecents();
+  try {
+    const saved = JSON.parse(localStorage.getItem(TRIP_KEY) || "null");
+    if (saved?.dest && Date.now() - saved.tripStartMs < 12 * 3600 * 1000) {
+      startPlace = saved.start || null;
+      if (startPlace) $("start-input").value = shortName(startPlace.name);
+      startTrip(saved.dest, saved);
+    }
+  } catch { /* corrupted storage — start fresh */ }
 })();
