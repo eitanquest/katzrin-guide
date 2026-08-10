@@ -32,6 +32,35 @@ async function gql(query, variables = {}) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// ---- 0. Diagnostics: what does this token / schema support? ------------------
+
+async function probe() {
+  try {
+    const d = await gql(`{ me { id } }`);
+    console.log(`token OK (me.id: ${d.me?.id ? "present" : "missing"})`);
+  } catch (e) {
+    console.log(`me query failed: ${e.message}`);
+  }
+  try {
+    const d = await gql(`{ __schema { queryType { fields { name } } } }`);
+    const names = d.__schema.queryType.fields.map((f) => f.name);
+    console.log(`top-level queries: ${names.join(", ")}`);
+  } catch (e) {
+    console.log(`introspection (query) failed: ${e.message}`);
+  }
+  for (const type of ["User", "Workspace"]) {
+    try {
+      const d = await gql(
+        `query($t: String!) { __type(name: $t) { fields { name } } }`,
+        { t: type }
+      );
+      console.log(`${type} fields: ${d.__type?.fields?.map((f) => f.name).join(", ")}`);
+    } catch (e) {
+      console.log(`introspection (${type}) failed: ${e.message}`);
+    }
+  }
+}
+
 // ---- 1. Find all projects visible to this token (schema varies; try shapes) --
 
 async function listProjects() {
@@ -45,17 +74,33 @@ async function listProjects() {
       pick: (d) => d.me?.projects?.edges?.map((e) => e.node),
     },
     {
+      q: `{ me { workspaces { id name projects { edges { node { id name } } } } } }`,
+      pick: (d) =>
+        d.me?.workspaces?.flatMap(
+          (w) => w.projects?.edges?.map((e) => e.node) || []
+        ),
+    },
+    {
       q: `{ me { workspaces { id name team { projects { edges { node { id name } } } } } } }`,
       pick: (d) =>
         d.me?.workspaces?.flatMap(
           (w) => w.team?.projects?.edges?.map((e) => e.node) || []
         ),
     },
+    {
+      q: `{ workspaces { id name team { projects { edges { node { id name } } } } } }`,
+      pick: (d) =>
+        d.workspaces?.flatMap(
+          (w) => w.team?.projects?.edges?.map((e) => e.node) || []
+        ),
+    },
   ];
   for (const { q, pick } of attempts) {
     try {
-      const projects = pick(await gql(q));
+      const data = await gql(q);
+      const projects = pick(data);
       if (projects?.length) return projects;
+      console.log(`(shape returned no projects: ${q.slice(0, 60)}… → ${JSON.stringify(data).slice(0, 300)})`);
     } catch (e) {
       console.log(`(project query shape not supported: ${e.message})`);
     }

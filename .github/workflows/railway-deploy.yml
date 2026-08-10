@@ -1,7 +1,8 @@
 name: Railway deploy
 
 # Manually-triggered deploy helper. The Railway token is provided at dispatch
-# time and is never stored in the repository.
+# time and is never stored in the repository. It is passed via job-level env
+# (step-level env values get echoed into public logs; job-level ones do not).
 on:
   workflow_dispatch:
     inputs:
@@ -18,14 +19,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      RAILWAY_TOKEN: ${{ inputs.railway_token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Connect repo + deploy on Railway
-        env:
-          RAILWAY_TOKEN: ${{ inputs.railway_token }}
         run: |
           echo "::add-mask::$RAILWAY_TOKEN"
           node scripts/railway-deploy.mjs
