@@ -166,9 +166,21 @@
 
     state.watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        const first = !state.lastFix;
-        state.lastFix = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        if (first) refreshRoute();
+        const fix = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+        const prev = state.lastFix;
+        state.lastFix = fix;
+        if (!prev) {
+          refreshRoute();
+          return;
+        }
+        // smooth-countdown: tick "to go" down with every GPS fix so the number
+        // is live between the 30-second route refreshes (which then correct it).
+        if (state.remainingMeters !== null) {
+          const moved = haversineMeters(prev, fix);
+          if (moved > 2 && moved < 1000) {
+            state.remainingMeters = Math.max(0, state.remainingMeters - moved);
+          }
+        }
       },
       (err) => {
         $("trip-status").textContent =
@@ -223,7 +235,14 @@
   function tick() {
     if (state.remainingMeters === null) return;
 
-    if (state.remainingMeters <= ARRIVED_METERS) return arrive();
+    // Arrive only when the (interpolated) road distance AND the straight-line
+    // GPS distance both agree we're basically there.
+    if (
+      state.remainingMeters <= ARRIVED_METERS &&
+      (!state.lastFix || haversineMeters(state.lastFix, state.dest) <= ARRIVED_METERS * 2)
+    ) {
+      return arrive();
+    }
 
     const pct = Math.min(
       99,
