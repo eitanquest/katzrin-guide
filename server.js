@@ -199,6 +199,75 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, model: ANSWER_MODEL, globalCountToday, dayKey });
 });
 
+// ---------------------------------------------------------------------------
+// "Are We There Yet?" — kids' GPS trip tracker (static app + tiny API proxies).
+// The proxies exist because the site's CSP (helmet) only allows connect-src
+// 'self': the browser talks to us, and we talk to Nominatim (geocoding) and
+// OSRM (driving routes/ETA). No API keys required for either service.
+// ---------------------------------------------------------------------------
+app.get("/are-we-there-yet", (_req, res) => res.redirect(302, "/awty/"));
+app.use("/awty", express.static(path.join(__dirname, "public-awty")));
+
+const awtyLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30, // route refreshes every 30s per trip + a few searches — plenty
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "rate_limited" },
+});
+
+const AWTY_UA = "katzrin.ai are-we-there-yet (contact: site admin)";
+
+// GET /awty/api/geocode?q=... → [{ name, lat, lon }]
+app.get("/awty/api/geocode", awtyLimiter, async (req, res) => {
+  const q = String(req.query.q || "").trim().slice(0, 200);
+  if (!q) return res.status(400).json({ error: "missing_query" });
+  try {
+    const url =
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=en,he&q=" +
+      encodeURIComponent(q);
+    const r = await fetch(url, { headers: { "User-Agent": AWTY_UA } });
+    if (!r.ok) throw new Error(`nominatim ${r.status}`);
+    const places = await r.json();
+    res.json(
+      places.map((p) => ({
+        name: p.display_name,
+        lat: parseFloat(p.lat),
+        lon: parseFloat(p.lon),
+      }))
+    );
+  } catch (err) {
+    console.error("awty geocode error:", err?.message || err);
+    res.status(502).json({ error: "geocode_failed" });
+  }
+});
+
+// GET /awty/api/route?from=lat,lon&to=lat,lon → { durationSec, distanceMeters }
+app.get("/awty/api/route", awtyLimiter, async (req, res) => {
+  const parse = (s) => {
+    const [lat, lon] = String(s || "").split(",").map(Number);
+    return Number.isFinite(lat) && Number.isFinite(lon) &&
+      Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
+  };
+  const from = parse(req.query.from);
+  const to = parse(req.query.to);
+  if (!from || !to) return res.status(400).json({ error: "bad_coordinates" });
+  try {
+    const url =
+      `https://router.project-osrm.org/route/v1/driving/` +
+      `${from.lon},${from.lat};${to.lon},${to.lat}?overview=false&alternatives=false&steps=false`;
+    const r = await fetch(url, { headers: { "User-Agent": AWTY_UA } });
+    if (!r.ok) throw new Error(`osrm ${r.status}`);
+    const data = await r.json();
+    const route = data.routes?.[0];
+    if (data.code !== "Ok" || !route) return res.status(404).json({ error: "no_route" });
+    res.json({ durationSec: route.duration, distanceMeters: route.distance });
+  } catch (err) {
+    console.error("awty route error:", err?.message || err);
+    res.status(502).json({ error: "route_failed" });
+  }
+});
+
 app.post("/api/chat", dayLimiter, chatLimiter, async (req, res) => {
   try {
     const message = typeof req.body?.message === "string" ? req.body.message.trim() : "";

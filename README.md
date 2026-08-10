@@ -48,3 +48,14 @@ Edit `knowledge-base.md` (or repoint `KB_PATH`) and restart. The bot only states
 ## Deploying
 
 Any Node host works (Railway, Render, Fly, a VPS). Set `ANTHROPIC_API_KEY` (and any overrides) as environment variables, run `npm start`. `app.set("trust proxy", 1)` is already set for correct client IPs behind a proxy. Put it behind HTTPS.
+
+## Bonus: "Are We There Yet?" 🚗
+
+A kid-friendly GPS trip tracker served by the same server at **`/awty`** (alias `/are-we-there-yet`):
+
+- Search any destination (OpenStreetMap Nominatim geocoding), tap it, and go.
+- Live driving ETA re-estimated every 30 s from your phone's GPS via OSRM routing (real road routes, not straight lines).
+- A big progress bar with a car driving toward the finish flag, a "time left" countdown, distance remaining, and a trip timer.
+- Playful "Not yet! / Almost there!" answers and a confetti celebration on arrival.
+
+The browser only talks to this server (`/awty/api/geocode`, `/awty/api/route` — both rate-limited); the server proxies Nominatim/OSRM, so the site's strict CSP stays intact and no API keys are needed. GPS requires HTTPS, which the production deployment already has.
