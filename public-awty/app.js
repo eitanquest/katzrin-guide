@@ -47,12 +47,13 @@
     if (!roadLen) return false;
     roadPath.style.strokeDasharray = `${roadLen}`;
     roadPath.style.strokeDashoffset = `${roadLen}`;
+    // Park the flag and home beside the road, not on the asphalt.
     const end = roadPath.getPointAtLength(roadLen);
-    $("svg-flag").setAttribute("x", end.x);
-    $("svg-flag").setAttribute("y", end.y - 26);
+    $("svg-flag").setAttribute("x", Math.min(end.x + 34, 282));
+    $("svg-flag").setAttribute("y", end.y - 10);
     const start = roadPath.getPointAtLength(0);
-    $("svg-home").setAttribute("x", start.x);
-    $("svg-home").setAttribute("y", start.y + 4);
+    $("svg-home").setAttribute("x", Math.max(start.x - 32, 16));
+    $("svg-home").setAttribute("y", start.y - 2);
     return true;
   }
 
