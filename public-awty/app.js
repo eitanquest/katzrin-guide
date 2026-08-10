@@ -34,7 +34,65 @@
     screens[name].classList.add("active");
   }
 
-  // ---------- destination search ----------
+  // ---------- start & destination search ----------
+
+  async function searchPlaces(q) {
+    const res = await fetch(`api/geocode?q=${encodeURIComponent(q)}`);
+    if (!res.ok) throw new Error(`geocode ${res.status}`);
+    return res.json();
+  }
+
+  // Optional starting point. null = "right here" (first GPS fix sets the baseline).
+  let startPlace = null;
+
+  async function searchStart() {
+    const q = $("start-input").value.trim();
+    const ul = $("start-results");
+    ul.hidden = true;
+    if (!q) {
+      startPlace = null;
+      return;
+    }
+    $("setup-status").textContent = "Looking for the starting point… 🔍";
+    try {
+      const places = await searchPlaces(q);
+      ul.innerHTML = "";
+      const here = document.createElement("li");
+      here.textContent = "📍 Right here (where we are now)";
+      here.addEventListener("click", () => {
+        startPlace = null;
+        $("start-input").value = "";
+        ul.hidden = true;
+        $("setup-status").textContent = "";
+      });
+      ul.appendChild(here);
+      for (const p of places) {
+        const li = document.createElement("li");
+        li.textContent = `🏠 ${p.name}`;
+        li.addEventListener("click", () => {
+          startPlace = p;
+          $("start-input").value = shortName(p.name);
+          ul.hidden = true;
+          $("setup-status").textContent = "";
+        });
+        ul.appendChild(li);
+      }
+      ul.hidden = false;
+      $("setup-status").textContent = places.length
+        ? "Tap where we started! 👇"
+        : "Couldn't find that place. Try another name? 🤔";
+    } catch {
+      $("setup-status").textContent = "Hmm, the search didn't work. Try again? 🙏";
+    }
+  }
+
+  $("start-search-btn").addEventListener("click", searchStart);
+  $("start-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchStart();
+    }
+  });
 
   $("search-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -43,10 +101,7 @@
     $("setup-status").textContent = "Looking for it… 🔍";
     $("results").hidden = true;
     try {
-      const res = await fetch(`api/geocode?q=${encodeURIComponent(q)}`);
-      if (!res.ok) throw new Error(`geocode ${res.status}`);
-      const places = await res.json();
-      renderResults(places);
+      renderResults(await searchPlaces(q));
     } catch {
       $("setup-status").textContent = "Hmm, the search didn't work. Try again? 🙏";
     }
@@ -80,7 +135,24 @@
     state.roughEstimate = false;
 
     $("trip-dest-name").textContent = shortName(place.name);
+    $("trip-from").textContent = startPlace
+      ? `starting from ${shortName(startPlace.name)}`
+      : "starting from right here 📍";
     $("trip-status").textContent = "Finding our car on the map… 🛰️";
+
+    // With a chosen starting point, the WHOLE start→destination route is 100%,
+    // so opening the app mid-trip shows real progress instead of 0%.
+    if (startPlace) {
+      fetch(`api/route?from=${startPlace.lat},${startPlace.lon}&to=${place.lat},${place.lon}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((r) => {
+          if (r) {
+            state.baselineMeters = Math.max(r.distanceMeters, state.remainingMeters || 0, 1);
+            tick();
+          }
+        })
+        .catch(() => {}); // first GPS route will set a baseline instead
+    }
     $("pct").textContent = "0%";
     $("road-fill").style.width = "0%";
     $("car").style.left = "0%";
@@ -197,8 +269,11 @@
 
   function resetToSetup() {
     stopTracking();
+    startPlace = null;
     $("results").hidden = true;
+    $("start-results").hidden = true;
     $("dest-input").value = "";
+    $("start-input").value = "";
     $("setup-status").textContent = "";
     $("confetti").innerHTML = "";
     show("setup");

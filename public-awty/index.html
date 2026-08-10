@@ -18,12 +18,23 @@
         <p class="tagline">Pick where you're going and watch the car get closer!</p>
       </div>
 
-      <form id="search-form" class="search-box">
-        <input id="dest-input" type="search" placeholder="Where are we going? 🏖️"
-               autocomplete="off" enterkeyhint="search" required />
-        <button id="search-btn" type="submit">Go!</button>
+      <form id="search-form">
+        <label class="field-label" for="start-input">🏠 Starting from</label>
+        <div class="search-box">
+          <input id="start-input" type="search" placeholder="Right here 📍 (or type a place)"
+                 autocomplete="off" enterkeyhint="search" />
+          <button id="start-search-btn" type="button">🔍</button>
+        </div>
+        <ul id="start-results" class="results" hidden></ul>
+
+        <label class="field-label" for="dest-input">🏖️ Going to</label>
+        <div class="search-box">
+          <input id="dest-input" type="search" placeholder="Where are we going?"
+                 autocomplete="off" enterkeyhint="search" required />
+          <button id="search-btn" type="submit">Go!</button>
+        </div>
+        <ul id="results" class="results" hidden></ul>
       </form>
-      <ul id="results" class="results" hidden></ul>
       <p id="setup-status" class="status" role="status"></p>
     </section>
 
@@ -31,6 +42,7 @@
     <section id="screen-trip" class="screen">
       <p class="going-to">Going to</p>
       <h2 id="trip-dest-name">…</h2>
+      <p class="going-to" id="trip-from"></p>
 
       <div class="big-answer" id="big-answer">Not yet! 🙈</div>
 
