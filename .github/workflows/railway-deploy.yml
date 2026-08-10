@@ -1,0 +1,31 @@
+name: Railway deploy
+
+# Manually-triggered deploy helper. The Railway token is provided at dispatch
+# time and is never stored in the repository.
+on:
+  workflow_dispatch:
+    inputs:
+      railway_token:
+        description: "Railway API token (used for this run only, not stored)"
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency: railway-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Connect repo + deploy on Railway
+        env:
+          RAILWAY_TOKEN: ${{ inputs.railway_token }}
+        run: |
+          echo "::add-mask::$RAILWAY_TOKEN"
+          node scripts/railway-deploy.mjs
