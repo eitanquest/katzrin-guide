@@ -144,6 +144,7 @@ async function domainsFor(projectId, environmentId, serviceId) {
 
 // ---- main -------------------------------------------------------------------
 
+await probe();
 const projects = await listProjects();
 console.log(`Found ${projects.length} project(s): ${projects.map((p) => p.name).join(", ")}`);
 
