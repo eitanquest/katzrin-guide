@@ -74,6 +74,22 @@
 
   // ---------- start & destination search ----------
 
+  // onTap: mobile-safe tap handler. A plain 'click' on a result can be lost on
+  // iOS when the closing keyboard reflows the page mid-tap; 'pointerup' fires
+  // before that. The timestamp guard stops pointerup+click double-firing.
+  function onTap(el, fn) {
+    let last = 0;
+    const handler = (e) => {
+      const now = Date.now();
+      if (now - last < 600) return;
+      last = now;
+      e.preventDefault();
+      fn();
+    };
+    el.addEventListener("pointerup", handler);
+    el.addEventListener("click", handler);
+  }
+
   async function searchPlaces(q) {
     const res = await fetch(`api/geocode?q=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error(`geocode ${res.status}`);
@@ -91,13 +107,14 @@
       startPlace = null;
       return;
     }
+    $("start-input").blur();
     $("setup-status").textContent = "Looking for the starting point… 🔍";
     try {
       const places = await searchPlaces(q);
       ul.innerHTML = "";
       const here = document.createElement("li");
       here.textContent = "📍 Right here (where we are now)";
-      here.addEventListener("click", () => {
+      onTap(here, () => {
         startPlace = null;
         $("start-input").value = "";
         ul.hidden = true;
@@ -107,7 +124,7 @@
       for (const p of places) {
         const li = document.createElement("li");
         li.textContent = `🏠 ${p.name}`;
-        li.addEventListener("click", () => {
+        onTap(li, () => {
           startPlace = p;
           $("start-input").value = shortName(p.name);
           ul.hidden = true;
@@ -136,6 +153,7 @@
     e.preventDefault();
     const q = $("dest-input").value.trim();
     if (!q) return;
+    $("dest-input").blur();
     $("setup-status").textContent = "Looking for it… 🔍";
     $("results").hidden = true;
     try {
@@ -156,7 +174,7 @@
     for (const p of places) {
       const li = document.createElement("li");
       li.textContent = `📍 ${p.name}`;
-      li.addEventListener("click", () => startTrip(p));
+      onTap(li, () => startTrip(p));
       ul.appendChild(li);
     }
     ul.hidden = false;
@@ -203,7 +221,7 @@
     for (const p of recents) {
       const li = document.createElement("li");
       li.textContent = `📍 ${shortName(p.name)}`;
-      li.addEventListener("click", () => startTrip(p));
+      onTap(li, () => startTrip(p));
       ul.appendChild(li);
     }
   }
@@ -211,6 +229,7 @@
   // ---------- trip ----------
 
   function startTrip(place, saved) {
+    stopTracking(); // never stack two trips (double-tap, resume, recents)
     state.dest = place;
     state.baselineMeters = saved?.baselineMeters ?? null;
     state.remainingMeters = null;
