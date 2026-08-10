@@ -49,12 +49,25 @@
       <div class="big-answer" id="big-answer">Not yet! 🙈</div>
 
       <div class="road-wrap">
-        <div class="road">
-          <div class="road-fill" id="road-fill"></div>
-          <div class="car" id="car" aria-hidden="true">🚗</div>
-          <div class="flag" aria-hidden="true">🏁</div>
-        </div>
-        <div class="pct" id="pct">0%</div>
+        <svg id="road-svg" viewBox="0 0 300 440" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <linearGradient id="roadgrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#34d399" />
+              <stop offset="100%" stop-color="#fbbf24" />
+            </linearGradient>
+          </defs>
+          <path id="road-base"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <path id="road-fill-path"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <path id="road-center"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <text id="svg-pct" x="64" y="90">0%</text>
+          <text id="svg-home" x="60" y="415">🏠</text>
+          <text id="svg-flag" x="222" y="32">🏁</text>
+          <text id="svg-car" x="60" y="415">🚗</text>
+          <text id="svg-dist" x="60" y="385"></text>
+        </svg>
       </div>
 
       <div class="stats">

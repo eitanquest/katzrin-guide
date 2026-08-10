@@ -34,6 +34,43 @@
     screens[name].classList.add("active");
   }
 
+  // ---------- the S-shaped road (SVG) ----------
+
+  const roadPath = $("road-fill-path");
+  let roadLen = 0;
+
+  // getTotalLength() returns 0 while the trip screen is display:none,
+  // so measure lazily the first time the road is actually visible.
+  function ensureRoad() {
+    if (roadLen) return true;
+    roadLen = roadPath.getTotalLength();
+    if (!roadLen) return false;
+    roadPath.style.strokeDasharray = `${roadLen}`;
+    roadPath.style.strokeDashoffset = `${roadLen}`;
+    const end = roadPath.getPointAtLength(roadLen);
+    $("svg-flag").setAttribute("x", end.x);
+    $("svg-flag").setAttribute("y", end.y - 26);
+    const start = roadPath.getPointAtLength(0);
+    $("svg-home").setAttribute("x", start.x);
+    $("svg-home").setAttribute("y", start.y + 4);
+    return true;
+  }
+
+  function updateRoad(pct) {
+    if (!ensureRoad()) return;
+    const f = Math.min(Math.max(pct, 0), 100) / 100;
+    roadPath.style.strokeDashoffset = `${roadLen * (1 - f)}`;
+    const p = roadPath.getPointAtLength(roadLen * f);
+    $("svg-car").setAttribute("x", p.x);
+    $("svg-car").setAttribute("y", p.y);
+    const dist = $("svg-dist");
+    dist.setAttribute("x", Math.min(Math.max(p.x, 45), 255));
+    dist.setAttribute("y", Math.max(p.y - 30, 18));
+    dist.textContent =
+      state.remainingMeters !== null ? fmtDistance(state.remainingMeters) : "";
+    $("svg-pct").textContent = `${Math.round(pct)}%`;
+  }
+
   // ---------- start & destination search ----------
 
   async function searchPlaces(q) {
@@ -203,10 +240,8 @@
         })
         .catch(() => {}); // first GPS route will set a baseline instead
     }
-    $("pct").textContent = "0%";
-    $("road-fill").style.width = "0%";
-    $("car").style.left = "0%";
     show("trip");
+    requestAnimationFrame(() => updateRoad(0)); // measure the SVG once it's visible
     requestWakeLock();
 
     if (!("geolocation" in navigator)) {
@@ -299,9 +334,7 @@
       99,
       Math.max(0, Math.round((1 - state.remainingMeters / state.baselineMeters) * 100))
     );
-    $("pct").textContent = `${pct}%`;
-    $("road-fill").style.width = `${pct}%`;
-    $("car").style.left = `${pct}%`;
+    updateRoad(pct);
     $("big-answer").textContent = answerFor(pct);
 
     const leftMs = Math.max(0, state.arrivalAtMs - Date.now());
