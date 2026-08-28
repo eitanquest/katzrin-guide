@@ -204,9 +204,59 @@ try {
   console.log(`serviceConnect: ${e.message} (may already be connected — continuing)`);
 }
 
-// ---- 2b. Optionally set GOOGLE_MAPS_API_KEY on the service ------------------
+// ---- 2b. Set GOOGLE_MAPS_API_KEY on the service -----------------------------
+// Source: the workflow input if provided, otherwise scan every Railway service's
+// variables for an existing Google Maps key and copy it over. Values are never
+// logged — only the variable name and which service it came from.
 
-const gmapsKey = process.env.SET_GOOGLE_MAPS_API_KEY;
+async function varsFor(projectId, environmentId, serviceId) {
+  try {
+    const d = await gql(
+      `query($p: String!, $e: String!, $s: String!) {
+         variables(projectId: $p, environmentId: $e, serviceId: $s)
+       }`,
+      { p: projectId, e: environmentId, s: serviceId }
+    );
+    return d.variables || {};
+  } catch {
+    return {};
+  }
+}
+
+let gmapsKey = process.env.SET_GOOGLE_MAPS_API_KEY || "";
+let gmapsSource = gmapsKey ? "workflow input" : "";
+
+if (!gmapsKey) {
+  const candidates = [];
+  for (const p of projects) {
+    const detail = await projectDetail(p.id);
+    const services = detail.services.edges.map((e) => e.node);
+    const envs = detail.environments.edges.map((e) => e.node);
+    for (const s of services) {
+      for (const env of envs) {
+        const vars = await varsFor(detail.id, env.id, s.id);
+        for (const [name, value] of Object.entries(vars)) {
+          const v = String(value ?? "");
+          const looksGoogle = v.startsWith("AIza");
+          const mapsName = /GOOGLE.*MAPS?|MAPS?.*(KEY|API)|GMAPS/i.test(name);
+          if (!looksGoogle && !mapsName) continue;
+          // score: named-for-maps + Google-shaped value beats either alone
+          const score = (mapsName ? 2 : 0) + (looksGoogle ? 1 : 0);
+          candidates.push({ score, value: v, where: `${detail.name}/${s.name} (${name})` });
+        }
+      }
+    }
+  }
+  candidates.sort((a, b) => b.score - a.score);
+  if (candidates.length) {
+    console.log(`Maps-key candidates found: ${candidates.map((c) => `${c.where} [score ${c.score}]`).join(", ")}`);
+    gmapsKey = candidates[0].value;
+    gmapsSource = candidates[0].where;
+  } else {
+    console.log("No Google Maps key found in any Railway service; deploying without one.");
+  }
+}
+
 if (gmapsKey) {
   try {
     await gql(
@@ -217,7 +267,7 @@ if (gmapsKey) {
          variables: { GOOGLE_MAPS_API_KEY: ${JSON.stringify(gmapsKey)} }
        }) }`
     );
-    console.log("GOOGLE_MAPS_API_KEY set on the service.");
+    console.log(`GOOGLE_MAPS_API_KEY set on the service (source: ${gmapsSource}).`);
   } catch (e) {
     console.error(`Failed to set GOOGLE_MAPS_API_KEY: ${e.message}`);
     process.exit(1);
@@ -283,6 +333,17 @@ try {
   console.log(`Site check ${SITE_CHECK_URL}: HTTP ${res.status}, app present: ${ok}`);
   if (!ok) process.exit(1);
   console.log("LIVE ✔ — katzrin.ai/awty is serving the app.");
+  // Katzrin → Tel Aviv: reports whether the ETA came from Google live traffic.
+  try {
+    const rr = await fetch(SITE_CHECK_URL + "api/route?from=32.992,35.689&to=32.086,34.789");
+    const jj = await rr.json();
+    console.log(
+      `route check: HTTP ${rr.status}, live traffic: ${jj.traffic === true}, ` +
+      `eta minutes: ${Math.round((jj.durationSec || 0) / 60)}`
+    );
+  } catch (e) {
+    console.log(`route check failed: ${e.message}`);
+  }
 } catch (e) {
   console.error(`Site check failed: ${e.message}`);
   process.exit(1);
