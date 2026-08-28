@@ -204,6 +204,26 @@ try {
   console.log(`serviceConnect: ${e.message} (may already be connected — continuing)`);
 }
 
+// ---- 2b. Optionally set GOOGLE_MAPS_API_KEY on the service ------------------
+
+const gmapsKey = process.env.SET_GOOGLE_MAPS_API_KEY;
+if (gmapsKey) {
+  try {
+    await gql(
+      `mutation { variableCollectionUpsert(input: {
+         projectId: ${JSON.stringify(target.project.id)},
+         environmentId: ${JSON.stringify(target.env.id)},
+         serviceId: ${JSON.stringify(target.service.id)},
+         variables: { GOOGLE_MAPS_API_KEY: ${JSON.stringify(gmapsKey)} }
+       }) }`
+    );
+    console.log("GOOGLE_MAPS_API_KEY set on the service.");
+  } catch (e) {
+    console.error(`Failed to set GOOGLE_MAPS_API_KEY: ${e.message}`);
+    process.exit(1);
+  }
+}
+
 // ---- 3. Trigger a deployment of the latest commit ---------------------------
 
 let triggered = false;
@@ -259,7 +279,7 @@ try {
   const res = await fetch(SITE_CHECK_URL, { redirect: "follow" });
   const html = await res.text();
   const appJs = await (await fetch(SITE_CHECK_URL + "app.js")).text().catch(() => "");
-  const ok = res.ok && html.includes("road-svg") && appJs.includes("onTap") && html.includes("app.js?v=2");
+  const ok = res.ok && html.includes("road-svg") && appJs.includes("live traffic");
   console.log(`Site check ${SITE_CHECK_URL}: HTTP ${res.status}, app present: ${ok}`);
   if (!ok) process.exit(1);
   console.log("LIVE ✔ — katzrin.ai/awty is serving the app.");

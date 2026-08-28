@@ -10,6 +10,11 @@ on:
         description: "Railway API token (used for this run only, not stored)"
         required: true
         type: string
+      google_maps_api_key:
+        description: "Optional: set GOOGLE_MAPS_API_KEY on the Railway service before deploying"
+        required: false
+        type: string
+        default: ""
 
 permissions: {}
 
@@ -21,6 +26,7 @@ jobs:
     timeout-minutes: 15
     env:
       RAILWAY_TOKEN: ${{ inputs.railway_token }}
+      SET_GOOGLE_MAPS_API_KEY: ${{ inputs.google_maps_api_key }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,4 +35,5 @@ jobs:
       - name: Connect repo + deploy on Railway
         run: |
           echo "::add-mask::$RAILWAY_TOKEN"
+          if [ -n "$SET_GOOGLE_MAPS_API_KEY" ]; then echo "::add-mask::$SET_GOOGLE_MAPS_API_KEY"; fi
           node scripts/railway-deploy.mjs

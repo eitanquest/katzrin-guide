@@ -309,18 +309,18 @@
         `api/route?from=${lat},${lon}&to=${state.dest.lat},${state.dest.lon}`
       );
       if (!res.ok) throw new Error(`route ${res.status}`);
-      const r = await res.json(); // { durationSec, distanceMeters }
-      applyRoute(r.distanceMeters, r.durationSec, false);
+      const r = await res.json(); // { durationSec, distanceMeters, traffic }
+      applyRoute(r.distanceMeters, r.durationSec, false, r.traffic);
     } catch {
       // Fallback: straight-line distance at ~70 km/h so the app still works
       const d = haversineMeters(state.lastFix, state.dest);
-      applyRoute(d, d / (70 / 3.6), true);
+      applyRoute(d, d / (70 / 3.6), true, false);
     } finally {
       state.fetchingRoute = false;
     }
   }
 
-  function applyRoute(distanceMeters, durationSec, rough) {
+  function applyRoute(distanceMeters, durationSec, rough, traffic) {
     state.roughEstimate = rough;
     state.remainingMeters = distanceMeters;
     state.arrivalAtMs = Date.now() + durationSec * 1000;
@@ -334,7 +334,9 @@
 
     $("trip-status").textContent = rough
       ? "Rough guess mode (no route service right now) 🧭"
-      : "";
+      : traffic
+        ? "⚡ live traffic ETA"
+        : "";
     tick();
   }
 
