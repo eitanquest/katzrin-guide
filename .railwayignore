@@ -2,3 +2,5 @@ node_modules
 .git
 .env
 *.log
+tools
+places-snapshot.md

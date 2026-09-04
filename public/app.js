@@ -42,7 +42,15 @@ heroInput.addEventListener("input", () => {
 
 // ---- Minimal, safe Markdown → HTML (per-line dir="auto" for HE/EN) ----
 function escapeHtml(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // Escape quotes too: this runs BEFORE the URL→href substitution in inlineMd,
+  // so a URL containing a quote becomes &quot;/&#39; and can't break out of the
+  // href="..." attribute (prevents attribute-injection XSS).
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 function inlineMd(s) {
   return escapeHtml(s)

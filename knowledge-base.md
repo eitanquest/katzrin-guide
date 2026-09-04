@@ -124,7 +124,7 @@ Katzrin is the employment hub for the whole central Golan, not just its own resi
 ## 6. Business — Opening / Renting Commercial Space / עסקים — פתיחה והשכרה
 For entrepreneurs wanting to start or relocate a business to Katzrin:
 
-- **Where to start:** the **Katzrin Local Council business-licensing department (רישוי עסקים)** is the first stop — contact **Lee Porat, ☎ 04-697-2835**. For commercial or industrial space to rent/buy, check live local listings (Shishi BaGolan, Yad2) and the council; the town has an active **industrial park (אזור תעשייה)** plus the Eitan and Chutzot HaGolan commercial centers (§7).
+- **Where to start:** the **Katzrin Local Council business-licensing department (רישוי עסקים)** is the first stop — call **☎ 04-697-2835** and ask for the current licensing officer (don't rely on a specific officer's name — it changes). For commercial or industrial space to rent/buy, check live local listings (Shishi BaGolan, Yad2) and the council; the town has an active **industrial park (אזור תעשייה)** plus the Eitan and Chutzot HaGolan commercial centers (§7).
 - **New commerce & employment complex:** a large new retail/employment hub is launching — the **"Delek Nechasim – Arazim – Mei Marom"** complex: thousands of m², hundreds of new jobs, dozens of leading brands, positioning Katzrin as a regional retail & leisure center. Anchor: **"Shuk Hertzel"** retail supermarket (thousands of m²).
 - **Business licensing / רישוי עסקים:** governed by the national Business Licensing Law (1968). Apply through the local council's business-licensing dept.; the authority must respond within ~45 days, approving bodies within ~90 days. Some business types need a license, others don't — the bot should triage by business type and link to gov.il licensing requirements + the council.
 - **Local business directory:** **katsrin.com/business** (אלפון עסקים) — a searchable list of Katzrin shops & services.
@@ -136,6 +136,57 @@ For entrepreneurs wanting to start or relocate a business to Katzrin:
 - **Chutzot HaGolan / חוצות הגולן** — commercial center at the town entrance between the industrial zone and the antiquities park; ~10 dunams, ~11,000 m² of retail & offices.
 - **New mega retail/employment complex** (see §6) — incoming, will significantly expand shopping options and bring national brands + a large supermarket.
 - **Local shops (sample, from katsrin.com/business):** booksellers (**Steimatzky**), neighborhood mini-markets with delivery (e.g., Omer Market), a bike shop (On Wheels), a plant nursery (Katzrin Nursery), gift/stationery/toy stores (Lily's, Everything Store), home & textile shops (Home Box, Home Design), printing/design (Lazard Design, Plot Plus, SmartFix), florists, and more — so day-to-day needs are covered in town. (Full searchable directory on the council site.)
+
+---
+
+## 7a. Local Business & Venue Directory / מדריך עסקים ומקומות בעיר
+*A category-by-category snapshot of what's in town — curated from the municipal directory (katsrin.co.il / katsrin.com/business), restaurant portals, and local knowledge, then **cross-checked against Google Maps (Places API) in July 2026**. Entries showing a **☎ phone / ★rating** were confirmed live on Google; **⚠️** = Google flags it temporarily/permanently closed (confirm before relying on it). **Retail is expanding fast** (the new Delek Nechasim / Shuk Hertzel complex is incoming), so still tell users to confirm current hours/openings.*
+Confidence is tagged: **[H]** = official/multi-source or Google-confirmed · **[M]** = medium / single good source · **[L]** = single mention, may be closed. Most shops cluster in three hubs: the **Eitan Commercial Center / מרכז מסחרי איתן**, **Chutzot HaGolan / Lev Katzrin mall / חוצות הגולן · לב קצרין**, and the **industrial zone / אזור תעשייה**.
+
+**Restaurants / מסעדות**
+- Bazelet / בזלת — kosher-mehadrin steakhouse · ☎ 04-696-1311 · 4.3★ **[H]**
+- Meat Shos / מיטשוס — steakhouse & butcher (12 St, near the winery) · ☎ 04-696-3334 · 4.2★ **[H]**
+- Altos / אלטוס — meat bar & catering, industrial zone · ☎ 04-696-1994 **[H]**
+- Kolo Zaki / כולו זאכי — hot hummus, Eitan Center · ☎ 04-821-8668 · 4.5★ **[H]** · Only Hummus / אונלי חומוס · ☎ 04-655-9606 · 4.8★ **[H]**
+- Golan Brewhouse / ברוהאוס הגולן — meat, inside the Bazelet brewery (Kesem HaGolan) **[H]** · Taam HaGolan / טעם הגולן — dairy, Kesem HaGolan **[H]** · Hummus Eliyahu / חומוס אליהו — Eitan Center, mehadrin **[H]** · Rak Hummus / רק חומוס — at the Paz station **[H]**
+- Burgerim / בורגרים — Eitan Center, kosher mehadrin · ☎ 04-637-6654 · 4.2★ **[H]** · Chai Thai / צ'אי תאי — Asian · ☎ 04-696-5050 **[M]**
+- Fantasy Bistro / פנטזי ביסטרו — pizza, 128 Zavitan St · ☎ 04-600-0046 · 4.7★ **[M]** · Mix HaBasar / מיקס הבשר — meat, Sapir center · ☎ 04-680-4771 **[M]** · Etzel Ilan / אצל אילן — Eitan Center · ☎ 052-266-8280 **[M]** · Clara Express / קלרה אקספרס — 6 St · ☎ 04-832-9457 **[M]**
+- Also in the malls/centers: HaSchnitzelia, Chopsticks, Wok Chef, HaMezalla (Lev Katzrin mall), and pizza spots (Pizza Bela, Golan Pizza Tango) **[M]**
+
+**Cafes / בתי קפה**
+- Franchook / פרנצ'וק — Lev Katzrin mall (1 Si'on St) · ☎ 077-205-6789 · 4.1★ **[H]** · Blue Berry / בלו ברי — Eitan Center · ☎ 04-696-2103 **[M]** · Sushi Tik Tak / סושי טיק טק — 22 Zavitan St · ☎ 073-731-9591 **[M]**
+- Cafe Cafe / קפה קפה — Chutzot HaGolan · ☎ 04-645-7577 · **⚠️ temporarily closed** (per Google, Jul 2026 — confirm)
+
+**Gas stations / תחנות דלק**
+- Sonol / סונול — Derech HaYayin, open 24/7 · 3.9★ **[H]** · Paz / פז — industrial area (has the Rak Hummus bar) **[H]** · Delek / דלק — industrial zone (per Waze) **[M]**. *No Dor Alon in town.*
+
+**Museums & tourism venues / מוזיאונים ואתרי תיירות** (see also §11, §14)
+- Golan Antiquities Museum / מוזיאון עתיקות הגולן — ☎ 04-696-1350 **[H]** · Ancient Katzrin Park / פארק קצרין העתיקה — restored Talmudic village + "Talmudic Experience" film · ☎ 04-696-2412 · 4.4★ **[H]**
+- Golan Heights Winery visitor center / מרכז מבקרים יקבי רמת הגולן ("Eretz HaYayin") **[H]** · Kesem HaGolan / קסם הגולן + Bazelet Brewery / מבשלת הגולן — tours & tastings **[H]** · Mei Eden / מי עדן (Salukia springs) water-source experience **[M]**
+
+**Parks & recreation in town / פארקים ופנאי** (distinct from the regional nature reserves in §14)
+- Country Club Katzrin (FitFun) / קאנטרי קצרין — the town's **main swimming pools** (indoor + outdoor), gym, tennis, saunas **[H]** · Family Park / פארק המשפחה — ~9,000 m² green family park, Zavitan St., free, 08:00–22:00 — **note: no swimming pool here** **[H]** · **Wading pool at Ancient Katzrin Park / בריכה רדודה בפארק קצרין העתיקה** — a shallow kids' wading pool at the reconstructed ancient village; the *other* in-town pool besides the Country Club **[M]** · Tennis courts (Artists St.) **[M]** · Matnas / מתנ"ס community center **[M]**
+
+**Clothing & fashion / חנויות בגדים**
+- Lev Katzrin mall is the fashion hub. Named: At Liat / אצל ליאת (lingerie/swim/bridal, Lev Katzrin mall) · ☎ 053-421-5119 **[M]** · Home Design by Aviva / הום דיזיין אצל אביבה (clothing + printing/embroidery, Eitan Center) · ☎ 054-785-5355 **[M]** · Olamam Shel Ktantanim / עולמם של קטנטנים (kids' & baby goods, 6 Si'on St) · ☎ 050-760-1276 **[M]** · Big Day Clothing (1 HaMayim) **[M]** · plus general family-clothing stores. *For the full list see katsrin.com/business.*
+
+**Groceries & supermarkets / סופרמרקטים ומכולות**
+- Shufersal Deal / שופרסל דיל — Hermon 7; the dominant chain in town **[H]** · Katsrin Market / מרקט קצרין — Dalyot St · 4.2★ **[M]** · HaMakolet / המכולת — 17 Susita St · 4.9★ **[M]** · Machsanei HaShuk / מחסני השוק — 6 Si'on St **[M]** · Omer Market / מרקט עומר (minimarket + delivery) **[M]**
+- Co-op Shop / קואופ שופ — 6 Dalyot St · **⚠️ temporarily closed** (per Google — confirm)
+- Shuk Hertzel / שוק הרצל — large supermarket, incoming anchor of the Delek Nechasim complex **[M–H]**
+- *No Rami Levy or Yochananof branch confirmed inside Katzrin as of July 2026.*
+
+**Hardware / DIY / home / חומרי בניין וכלי עבודה**
+- BIG Building Materials / ביג חומרי בניין — industrial zone · ☎ 04-696-1612 (tools, paint, electrical, plumbing, tiles, wood) **[H]** · Golan Lights / גולן לייט — lighting, 128 Zavitan St · ☎ 053-431-3190 **[M]** · Rehiti HaGolan / רהיטי הגולן — furniture, 17 St · ☎ 04-685-0666 **[M]** · Mobilia / מוביליה — furniture, 10 HaGat · ☎ 052-534-4480 **[M]** · Zol Stock / זול סטוק — Chutzot HaGolan (household) **[M]** · Katzrin Nursery / משתלת קצרין — garden supplies **[M]**
+
+**Pharmacies, post, banks, bakery & other shops**
+- Pharmacies: Golan Farm / גולן פארם — medicines & natural products, Eitan Center · ☎ 04-696-2578 **[M]** · Orneem Pharm / אורנים פארם (Agnon St.) **[M]** · Pharm Green / פארם ירוק **[M]**
+- Post: an Israel Post / דואר ישראל branch operates in town **[M]**
+- Banks: no dedicated bank branch surfaced on Google Places (Jul 2026); bank presence in Golan towns is limited — confirm via katsrin.com/business or the 106 hotline **[L]**
+- Bakeries: Katzrin Bakery / מאפיית קצרין — Eitan Center · ☎ 052-877-5717 · 4.5★ **[H]** · Dangao / דנגאו — cakes, 10 Inbar St · ☎ 050-930-0566 **[M]**
+- Also: Steimatzky (books), On Wheels (bikes), SmartFix (phone/computer repair), gift/stationery/toy stores **[M]**
+
+> **Bot tip:** when asked "is there a [cafe / hardware store / supermarket] in Katzrin?", answer with the confirmed **[H]** names first, mention the relevant hub (Eitan Center / Lev Katzrin mall / industrial zone), and for anything **[L]** or a full list, point to the live municipal directory **katsrin.com/business**. Always add "the retail scene is growing — confirm current hours/openings."
 
 ---
 
@@ -173,7 +224,7 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 **Business forms (entrepreneurs):**
 - Business license application / בקשה לרישיון עסק (council).
 - Tax registration: open a tik at Mas Hachnasa + Maam (osek patur/murshe) + Bituach Leumi.
-- Business licence via the council's licensing dept (רישוי עסקים — Lee Porat ☎ 04-697-2835).
+- Business licence via the council's licensing dept (רישוי עסקים — ☎ 04-697-2835; ask for the current licensing officer).
 
 **Key contacts / official sites:**
 - Local council: **katsrin.com** (services, phonebook, social services). Citizen center **106 / 04-696-2536** (switchboard **04-696-9697**). See §10a for the full department directory.
@@ -203,13 +254,27 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 | Engineering / הנדסה | 04-696-9601 |
 | Social services / רווחה | 04-696-9646 |
 | Urban services & sanitation / שפ"ע | 04-696-9655 |
-| Business licensing / רישוי עסקים (Lee Porat) | 04-697-2835 |
+| Business licensing / רישוי עסקים (ask for the current officer) | 04-697-2835 |
 | Community center / מתנ"ס | 04-696-4111 |
 | Library / ספרייה | 04-696-9667 |
 
 **Urban-services office hours:** Sun & Tue **12:00–16:00**; Mon, Wed & Thu **08:30–12:30** (confirm per department).
 
 > ⚠️ Numbers/hours are from the council site and can change — always present them with "confirm on katsrin.com or by calling 106."
+
+---
+
+## 10b. Elected Council & Town Leadership / מליאת המועצה והנהגת היישוב
+*From the official council site (katsrin.com/חברי-המועצה), current 2024–2029 term. These are **elected** roles — re-verify after the next municipal election (next regular cycle ~2028/29).*
+
+- **Head of council (Mayor) / ראש המועצה:** **Yehuda Dua / יהודה דואה** — in office since **19 March 2024**. He won the Feb 2024 election with **53.3%** vs. **46.7%** for the long-serving incumbent **Dmitry Apartsev / דמיטרי אפרצב** (who led 2013–2024). Ran on the **"Beyachad" / ביחד** list; born in Katzrin (1993). *(High confidence — official council site + Hebrew Wikipedia.)*
+- **Deputy head / סגן ראש המועצה:** **Avihai Yaakov / אביחי יעקב** *(High on the title; portfolio not published.)*
+- **Council members / חברי המועצה (the elected plenum):** Avihai Yaakov / אביחי יעקב, Victoria Kogan / ויקטוריה קוגן, Yogev Swissa / יוגב סוויסה, Yael Ozen / יעל אוזן, Lilach Tobi-Turgeman / לילך טובי תורג'מן, Shai Batelman / שי בטלמן, Nissim Azran / ניסים עזרן, Haim Hominer / חיים הומינר — alongside Mayor Yehuda Dua. *(High — official council members page.)*
+- The per-list **seat breakdown** is not published on accessible sources — **do not state seat counts.**
+- **CEO / מנכ"ל המועצה:** Yshi Libstein / ישי ליבשטיין (appointed role; see §10a for the phone directory).
+- **For reference — Golan Regional Council (a *separate* body):** head **Ori Kallner / אורי קלנר** (elected 2024), site **golan.org.il**. It governs the surrounding kibbutzim/moshavim, **not** Katzrin town — don't confuse the two.
+
+> ⚠️ The mayor, deputy, and council list are tied to the 2024 election term. Treat them as current for 2026 but flag "confirm on katsrin.com after the next municipal election."
 
 ---
 
@@ -225,6 +290,28 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 
 ---
 
+## 11a. Synagogues, Minyanim & Ritual Baths / בתי כנסת, מניינים ומקוואות
+*Community-sourced list (updated July 2026 from local knowledge). Katzrin has many nusachim living side by side (see §11 for the nusach overview). Prayer times shift with the season and by community — always confirm on the shul's board or with locals before relying on a specific time, and don't invent a missing address.*
+
+**Synagogues & minyanim / בתי כנסת ומניינים**
+- **Kol BaRamah / קול ברמה** — 2 Alonim St. / רחוב אלונים 2. **Dati-Leumi** (religious-Zionist); the **largest** congregation in town. Weekday **Shacharit 06:15, Mincha 13:15, Maariv** (follows Mincha / evening); Friday-night & Shabbat services.
+- **Rabbi Abun / רבי אבון** — Anafa St., Neve neighborhood / רחוב אנפה, שכונת נווה. **Sephardi**. Full daily minyan (Shacharit / Mincha / Maariv) + Shabbat. Has an adjacent **keilim mikvah** on site.
+- **Sephardi Minyan / בית כנסת ספרדי** — Alonim St. (down the street from Kol BaRamah). Weekday **Shacharit 07:30**; Friday-night & Shabbat services. Has an adjacent **keilim mikvah** on site.
+- **Chabad Lubavitch – Tzemach Tzedek / חב"ד – צמח צדק** — near / shares a site with the neighborhood Sephardi minyan (subject to current construction status). Mainly active on **Shabbat**: Friday-night + Shabbat morning **~09:00–09:30** *(⚠️ exact morning start time pending verification)*; **Kiddush** after davening. Google Maps lists "Chabad of Katzrin" at **☎ 04-696-4108**, around **HaChatzav St. / רחוב החצב** *(⚠️ street address not fully confirmed — Google also shows a different spot; call to verify).*
+- **Ad HaShamayim / עד השמים — Anglo minyan** — 23 Yodfat St. / רחוב יודפת 23. **English-speaking / Anglo** community. Friday-night + **Shabbat morning 08:30**.
+- **Breslov minyan / חסידות ברסלב** — *(address pending verification).* Friday-night + Shabbat morning at **Netz** (sunrise); notable **Kiddush** after davening.
+- **Central Synagogue / בית הכנסת המרכזי** — 22 Gamla Promenade / טיילת גמלא 22.
+- Also listed on Google Maps *(confirm locally)*: **Tair Shabbat Achim / תאיר שבת אחים** (71 Zavitan St), **Ohel Esther / אוהל אסתר** (24 Hamat St), **Beit Menachem Moshe / בית מנחם משה**.
+- Plus various smaller **shtieblach / שטיבלאך**, neighborhood minyanim, and informal prayer rooms operating around town.
+
+**Keilim mikvahs (for utensils) / מקווה כלים**
+Two dedicated **keilim mikvahs** — for immersing new dishes, utensils, glassware & cutlery:
+- Directly next to the **Rabbi Abun** synagogue (Anafa St.).
+- Directly next to the **Sephardi** synagogue (Alonim St. area).
+*(These are utensil-immersion mikvahs. The town also has personal mikvaot / מקוואות טהרה — confirm those separately with the local religious council / המועצה הדתית.)*
+
+---
+
 ## 12. Safety & Security / ביטחון ובטיחות
 *Handle this honestly and calmly — it's the #1 unspoken question for anyone considering the Golan.*
 
@@ -234,6 +321,21 @@ The chatbot should walk a family through these. Most are standard Israeli reloca
 - **During escalations** (e.g., the northern situation since Oct 2023), Home Front Command issues activity guidelines (gathering-size limits, schooling only where a protected space is reachable in time). The Golan Regional Council and Katzrin council publish updated instructions.
 - **Crime & daily safety:** day-to-day, the Golan is widely regarded as a **low-crime, tight-knit, safe community** — a major draw for families. *(Frame as the lived reputation; specific crime statistics weren't verified here.)*
 - **Bottom line for the bot:** be factual about the security reality *and* the strong community resilience; never minimize, never alarm. Point users to פיקוד העורף for current status.
+
+---
+
+## 12a. Emotional Support & Resilience Centers / תמיכה רגשית ומרכזי חוסן
+*Free, confidential mental-health support for residents of the north (including the Golan) coping with war-related stress, anxiety, or trauma. Provided by professionals through the Ministry of Health / northern resilience-center network (מרכזי החוסן, גליל מזרחי ומערבי / "תנופה לצפון"). ⚠️ Verify current numbers & hours — these programs change.*
+
+- **What it's for:** distress, anxiety, or trauma following the war/security events — including anxiety that has resurfaced with renewed tension. **No cost · full confidentiality (ללא עלות · חיסיון מלא).**
+- **Acute-response hotlines / מוקדי סיוע למענה מיידי — daily 08:00–20:00** (someone to talk to, consult, ask, or ease anxiety), by language:
+  - Hebrew / עברית — **04-690-0603**
+  - Arabic / ערבית — **04-770-2649**
+  - Russian / רוסית — **04-770-2650**
+  - English / אנגלית — **04-772-0651**
+- **Ongoing emotional / therapeutic care / מענה רגשי-טיפולי:** for all ages — individual, dyadic (early-childhood), parent guidance, and family therapy — for those coping with distress, anxiety, or trauma from the war.
+- **Couples therapy for uncertain times / "עושים חיבור":** a focused **3-session** couples process (**90 min each, on Zoom**) to rebuild connection, identify coping strengths, and build a supportive shared language.
+- **Bot tip:** offer this warmly whenever a user raises fear, anxiety, trauma, or the emotional toll of the security situation (pairs with §12). Katzrin/Golan residents can also ask the **Katzrin absorption dept. (מחלקת קליטה)** or the **Golan Regional Council** for the nearest in-person resilience center (מרכז חוסן). For immediate danger, use the §15 emergency numbers (MDA **101**).
 
 ---
 
@@ -347,9 +449,10 @@ Build intents around these user goals so the bot can route quickly:
 10. "Getting around / commute" → §9, §16
 11. "What forms do I need to move?" → §10 (the bot's flagship feature)
 12. "Benefits/grants for moving here" → §10, §20
-13. "Religious life / community fit" → §11, §19
+13. "Religious life / community fit / synagogues / minyanim / mikvah" → §11, §11a, §19
 14. "Things to do / tourism / nature" → §11, §14
 15. "Is it safe? / security & shelters" → §12
+15a. "I feel anxious/scared / emotional support / someone to talk to / therapy after the war" → §12a
 16. "What's the weather like?" → §13
 17. "Emergency / nearest hospital" → §15
 18. "Internet & remote work" → §17
@@ -358,6 +461,8 @@ Build intents around these user goals so the bot can route quickly:
 21. "Cost of living & where to get local info" → §20
 22. "Research / academic / scientific careers" → §5 (Shamir Institute) + §2 (Ohalo)
 23. "Food scene, wineries, local products, lifestyle" → §20a
+24. "Who runs the town / mayor / deputy / city council / who's in charge" → §10b (+ §10a contacts)
+25. "Local businesses — restaurants, cafes, where to eat, gas station, supermarket, hardware, pharmacy, shops, what's in town" → §7a (+ §6, §7)
 
 **Recommended bot behaviors:**
 - Always answer in the user's language (auto-detect Hebrew vs. English); offer to switch.
@@ -381,7 +486,9 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 - Nature hubs: Yehudiya, Meshushim Pool, Zavitan, Gamla (Israel's highest waterfall ~51 m), Hermon, Kinneret.
 - Land: most Israeli land is ISA (רמ"י) leasehold; Katzrin lots marketed via ISA tenders.
 - Shamir/Golan Research Institute (est. 1983, Univ. of Haifa-affiliated, in Katzrin); Golan Heights Winery (est. 1983) & boutique wineries (Pelter/Matar); Ein Zivan farmers' market.
-- Mayor/head of council: **Yehuda Dua / יהודה דואה** (per official council site, 2026; predecessor Dimi Apartsev). Elected role — re-verify after municipal elections.
+- Mayor/head of council: **Yehuda Dua / יהודה דואה** (per official council site, 2026; predecessor Dimi/Dmitry Apartsev). Elected role — re-verify after municipal elections.
+- **Elected council & deputy (§10b):** deputy **Avihai Yaakov** and the 8-member plenum (Kogan, Swissa, Ozen, Tobi-Turgeman, Batelman, Azran, Hominer + Yaakov) — from the official council members page. Elected roles — re-verify after the next municipal election.
+- **Business-venue directory (§7a) — the [H]-tagged entries:** gas stations (Paz, Sonol), Shufersal as the dominant supermarket, BIG Building Materials, the museums/tourism venues, Country Club & Family Park, and the top restaurants/cafes are multi-source confirmed.
 
 **Medium confidence (single source / promotional / fast-changing — present with a "verify" caveat):**
 - Specific apartment/house **prices** (market moving fast; always link live listings).
@@ -391,6 +498,8 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 - **Fiber/internet** availability — varies by building; confirm per address.
 - **Master-plan items** (§4: new northern entrance, museum, vet school/animal hospital, "Adom" project, hotels) are **planned/announced**, not all built — describe as "planned." ₪500M investment & human-capital score 90 come from local reporting (Shishi BaGolan).
 - **New-quarter unit counts vary by source** (HaNachalim ~1,560 vs ~1,800) — give a range, not a hard figure. "HaBostan" (Rova 13) is announced but early-stage.
+- **Synagogues & mikvahs (§11a):** community-sourced (July 2026 local knowledge), not from an official directory. Prayer times shift by season/community; a few addresses & times are explicitly flagged pending verification (Chabad street + Shabbat-morning time; Breslov address) — present as "confirm locally," never invent a missing address.
+- **Business-venue directory (§7a) — the [M] and [L] entries:** many shops/restaurants are single-source and the retail scene is expanding fast (new Delek Nechasim / Shuk Hertzel complex incoming). Present [L] names as "you may want to confirm it's still open," and for full/clothing/bank listings point to katsrin.com/business rather than asserting specifics.
 
 **Known conflicts / things to avoid stating as fact:**
 - Druze/Arab family counts (EN Wiki "30 Druze families" vs CBS ~0.1%). → say "a small number."
@@ -401,6 +510,9 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 - "Mehir Matara" unit counts and eligibility change per tender — link the official housing lottery.
 - **Crime statistics** not independently verified — describe the safe/tight-knit reputation, don't cite numbers.
 - Which **specific banks** have branches, exact **Arnona** tariffs, exact **purchase tax** owed — confirm with the council/official source per case.
+- **Business-licensing officer name:** sources disagree (the council pages show **Lee Porat**; another scrape returned **Hedva Srusi / חדוה סרוסי**) — both at **04-697-2835**. Give the **number** and "ask for the current licensing officer"; don't assert a name.
+- **Council seat breakdown by list:** not published on accessible sources — don't state how many seats each list won (§10b).
+- **Supermarket chains:** Shufersal is confirmed in town; **do not** assert a Rami Levy or Yochananof branch (not confirmed as of June 2026). Shuk Hertzel is the *incoming* anchor of the new complex, not yet open.
 
 **Rule for the bot:** for anything price, form, eligibility, or schedule related → give the framework + the official source link + "confirm current details," and prefer **2026** figures explicitly labeled with their year.
 
@@ -408,7 +520,9 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 
 ## 22. Primary Sources / מקורות
 - [Katzrin – Wikipedia (EN)](https://en.wikipedia.org/wiki/Katzrin) · [קצרין – ויקיפדיה](https://he.wikipedia.org/wiki/קצרין)
-- [Katzrin Local Council – katsrin.com](https://katsrin.com/) · [About Katzrin (council)](https://katsrin.com/אודות-קצרין/) · [Council urban services](https://katsrin.com/שירותים-עירוניים/) · [Council phone directory](https://katsrin.com/phonebook/) · [Council social services](https://katsrin.com/שירותים-חברתיים/) · [Business directory](https://katsrin.com/business/category/5/)
+- [Katzrin Local Council – katsrin.com](https://katsrin.com/) · [About Katzrin (council)](https://katsrin.com/אודות-קצרין/) · [Council members / חברי המועצה](https://katsrin.com/חברי-המועצה/) · [Council urban services](https://katsrin.com/שירותים-עירוניים/) · [Council phone directory](https://katsrin.com/phonebook/) · [Council social services](https://katsrin.com/שירותים-חברתיים/) · [Business directory](https://katsrin.com/business/category/5/)
+- Leadership: [Yehuda Dua – Hebrew Wikipedia](https://he.wikipedia.org/wiki/יהודה_דואה) · [Ori Kallner (Golan Regional Council) – Hebrew Wikipedia](https://he.wikipedia.org/wiki/אורי_קלנר)
+- Business/venue directory (§7a): [Katzrin Development Co. – katsrin.co.il](https://katsrin.co.il/) · [rest.co.il – Katzrin restaurants](https://www.rest.co.il/restaurants/katzrin/) · [2eat – Katzrin](https://www.2eat.co.il/) · [b144 – Katzrin businesses](https://www.b144.co.il/) · [FitFun Country Club Katzrin](https://www.fitfun.co.il/) · [Golan Brewhouse](https://brewhouse-golan.com/) · [Ancient Katzrin Park](https://parkatzrin.com/)
 - [Golan Regional Council – golan.org.il](https://www.golan.org.il/) · [Golan jobs – golanjobs.co.il](https://www.golanjobs.co.il/)
 - [Nefesh B'Nefesh – Katzrin community guide](https://www.nbn.org.il/life-in-israel/community-and-housing/community-guide/katzrin/)
 - Education: [HomEE – Katzrin education](https://www.homee.co.il/קצרין/חינוך/) · [Ynet – education in Katzrin](https://www.ynet.co.il/article/h1nueztks) · [Ohalo Academic College of Education & Sport (CHE)](https://che.org.il/en/place/ohalo-academic-college-of-education-and-sport-in-katzrin-2/) · [מכללת אוהלו – ויקיפדיה](https://he.wikipedia.org/wiki/מכללת_אוהלו)
@@ -419,6 +533,7 @@ The bot should treat data by confidence tier and **never invent specifics**. Whe
 - Benefits/forms: [Kol-Zchut – periphery tax credit](https://www.kolzchut.org.il/he/זיכוי_ממס_הכנסה_לתושבים_בפריפריה) · [Kol-Zchut – returning residents](https://www.kolzchut.org.il/he/תושבים_חוזרים)
 - Health/emergency: [Clalit – Katzrin clinic](https://www.clalit.co.il/he/sefersherut/pages/clinicdetails.aspx?ddeptcode=152260) · [Ziv Medical Center, Safed](https://www.ziv.org.il/) · [All Israel emergency numbers – B144](https://www.b144.co.il/EmergencyNo/)
 - Security: [Golan Regional Council – Home Front Command Q&A (PDF)](https://www.golan.org.il/uploads/n/1770712257.4088.pdf) · [Shishi BaGolan – emergency-preparedness](https://www.shishibagolan.co.il/) · [Public shelters map – GovMap](https://www.govmap.gov.il/?lay=417)
+- Emotional support (§12a): Ministry of Health northern resilience centers / "תנופה לצפון" — multilingual acute hotlines (source: official resilience-center flyer, July 2026; confirm current numbers).
 - Climate: [AccuWeather – Qazrin](https://www.accuweather.com/he/il/qazrin/1869831/weather-forecast/1869831) · [Walla Weather – Katzrin](https://weather.walla.co.il/city/10108)
 - Nature/recreation: [Yehudiya Reserve – Nature & Parks](https://www.parks.org.il/reserve-park/yahudiya/) · [Meshushim Reserve](https://www.parks.org.il/reserve-park/נחל-המשושים/) · [Gamla Reserve](https://familytrips.co.il/גמלא/) · [Tripadvisor – Golan nature & parks](https://www.tripadvisor.com/Attractions-g1389503-Activities-c57-Golan_Heights.html)
 - Land/ISA: [Israel Land Authority – land tenders](https://land.gov.il/Land_Tenders/Pages/Land_Tenders.aspx) · [Gov.il – purchasing land ownership rights](https://www.gov.il/he/service/guide-land-ownership)
