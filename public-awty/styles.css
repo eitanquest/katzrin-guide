@@ -1,0 +1,257 @@
+/* Are We There Yet? — kid-friendly trip tracker */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple: #5b21b6;
+  --purple-light: #7c3aed;
+  --yellow: #fbbf24;
+  --green: #34d399;
+  --white: #ffffff;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(180deg, #4c1d95 0%, #7c3aed 45%, #fb923c 100%);
+  color: var(--white);
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  width: 100%;
+  max-width: 520px;
+  padding: max(env(safe-area-inset-top), 20px) 20px max(env(safe-area-inset-bottom), 20px);
+  display: flex;
+  flex-direction: column;
+}
+
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ---------- Setup screen ---------- */
+.hero { text-align: center; margin: 4vh 0 12px; }
+
+.hero-car {
+  font-size: 64px;
+  animation: bounce 1.6s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+h1 {
+  font-size: clamp(32px, 9vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  text-shadow: 0 3px 0 rgba(0,0,0,.18);
+  margin-top: 8px;
+}
+
+.tagline { margin-top: 10px; font-size: 17px; opacity: .92; }
+
+.field-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  margin: 16px 2px 8px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+
+.search-box { display: flex; gap: 8px; }
+
+#dest-input {
+  flex: 1;
+  font-size: 18px;
+  padding: 16px 18px;
+  border: none;
+  border-radius: 18px;
+  outline: none;
+  color: #1f2937;
+  background: var(--white);
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+
+button {
+  font-size: 18px;
+  font-weight: 800;
+  padding: 16px 22px;
+  border: none;
+  border-radius: 18px;
+  background: var(--yellow);
+  color: #4c1d95;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  transition: transform .1s;
+}
+button:active { transform: scale(.96); }
+
+button.secondary {
+  background: rgba(255,255,255,.18);
+  color: var(--white);
+  box-shadow: none;
+  margin-top: 18px;
+}
+
+.results {
+  list-style: none;
+  margin-top: 14px;
+  background: var(--white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+}
+
+.results li {
+  padding: 15px 18px;
+  font-size: 16px;
+  color: #1f2937;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+}
+.results li:last-child { border-bottom: none; }
+.results li:active { background: #ede9fe; }
+
+.status { margin-top: 16px; text-align: center; font-size: 15px; opacity: .95; min-height: 22px; }
+
+/* ---------- Trip screen ---------- */
+.going-to { text-align: center; margin-top: 12px; font-size: 15px; opacity: .85; }
+
+#trip-dest-name {
+  text-align: center;
+  font-size: clamp(20px, 6vw, 28px);
+  font-weight: 900;
+  margin-top: 2px;
+  text-shadow: 0 2px 0 rgba(0,0,0,.15);
+}
+
+.big-answer {
+  text-align: center;
+  font-size: clamp(26px, 8vw, 38px);
+  font-weight: 900;
+  margin: 2vh 0;
+  text-shadow: 0 3px 0 rgba(0,0,0,.18);
+}
+
+/* The S-shaped road: an SVG that fills the middle of the screen */
+.road-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+}
+
+#road-svg { width: 100%; height: 100%; max-height: 56vh; }
+
+#road-base {
+  fill: none;
+  stroke: rgba(0,0,0,.38);
+  stroke-width: 30;
+  stroke-linecap: round;
+}
+
+#road-fill-path {
+  fill: none;
+  stroke: url(#roadgrad);
+  stroke-width: 30;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+#road-center {
+  fill: none;
+  stroke: rgba(255,255,255,.4);
+  stroke-width: 3;
+  stroke-dasharray: 10 13;
+}
+
+#svg-car {
+  font-size: 36px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+#svg-home, #svg-flag {
+  font-size: 26px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+#svg-dist {
+  font-size: 17px;
+  font-weight: 800;
+  text-anchor: middle;
+  fill: #fff;
+  stroke: rgba(0,0,0,.55);
+  stroke-width: 3px;
+  paint-order: stroke;
+}
+
+#svg-pct {
+  font-size: 46px;
+  font-weight: 900;
+  fill: rgba(255,255,255,.95);
+  stroke: rgba(0,0,0,.25);
+  stroke-width: 2px;
+  paint-order: stroke;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.stat {
+  background: rgba(255,255,255,.14);
+  border-radius: 16px;
+  padding: 12px 8px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.stat-label { font-size: 13px; opacity: .9; }
+.stat-value { font-size: clamp(16px, 5vw, 22px); font-weight: 800; margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+/* ---------- Arrived screen ---------- */
+#screen-arrived { text-align: center; justify-content: center; }
+
+.arrived-emoji { font-size: 88px; animation: pop .5s ease; }
+@keyframes pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.yes {
+  font-size: clamp(56px, 20vw, 96px);
+  margin-top: 8px;
+  animation: wiggle .6s ease-in-out infinite alternate;
+}
+@keyframes wiggle {
+  from { transform: rotate(-3deg) scale(1); }
+  to { transform: rotate(3deg) scale(1.06); }
+}
+
+.arrived-sub { font-size: 26px; font-weight: 800; margin-top: 14px; }
+.arrived-detail { font-size: 16px; opacity: .9; margin: 10px 0 28px; }
+
+#confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+
+#confetti span {
+  position: absolute;
+  top: -10vh;
+  font-size: 28px;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(120vh) rotate(540deg); }
+}

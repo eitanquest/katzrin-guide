@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#5b21b6" />
+  <title>Are We There Yet? 🚗</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+  <main id="app">
+
+    <!-- Screen 1: pick a destination -->
+    <section id="screen-setup" class="screen active">
+      <div class="hero">
+        <div class="hero-car" aria-hidden="true">🚗💨</div>
+        <h1>Are We There Yet?</h1>
+        <p class="tagline">Pick where you're going and watch the car get closer!</p>
+      </div>
+
+      <form id="search-form">
+        <label class="field-label" for="start-input">🏠 Starting from</label>
+        <div class="search-box">
+          <input id="start-input" type="search" placeholder="Right here 📍 (or type a place)"
+                 autocomplete="off" enterkeyhint="search" />
+          <button id="start-search-btn" type="button">🔍</button>
+        </div>
+        <ul id="start-results" class="results" hidden></ul>
+
+        <label class="field-label" for="dest-input">🏖️ Going to</label>
+        <div class="search-box">
+          <input id="dest-input" type="search" placeholder="Where are we going?"
+                 autocomplete="off" enterkeyhint="search" required />
+          <button id="search-btn" type="submit">Go!</button>
+        </div>
+        <ul id="results" class="results" hidden></ul>
+      </form>
+      <p class="field-label" id="recents-label" hidden>⭐ Recent trips</p>
+      <ul id="recents" class="results" hidden></ul>
+      <p id="setup-status" class="status" role="status"></p>
+    </section>
+
+    <!-- Screen 2: the trip -->
+    <section id="screen-trip" class="screen">
+      <p class="going-to">Going to</p>
+      <h2 id="trip-dest-name">…</h2>
+      <p class="going-to" id="trip-from"></p>
+
+      <div class="big-answer" id="big-answer">Not yet! 🙈</div>
+
+      <div class="road-wrap">
+        <svg id="road-svg" viewBox="0 0 300 440" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <linearGradient id="roadgrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#34d399" />
+              <stop offset="100%" stop-color="#fbbf24" />
+            </linearGradient>
+          </defs>
+          <path id="road-base"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <path id="road-fill-path"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <path id="road-center"
+                d="M 60 415 C 300 415, 300 315, 150 300 C 0 285, 0 185, 150 170 C 300 155, 300 70, 220 45" />
+          <text id="svg-pct" x="64" y="90">0%</text>
+          <text id="svg-home" x="60" y="415">🏠</text>
+          <text id="svg-flag" x="222" y="32">🏁</text>
+          <text id="svg-car" x="60" y="415">🚗</text>
+          <text id="svg-dist" x="60" y="385"></text>
+        </svg>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">⏱️ Time left</div>
+          <div class="stat-value" id="eta">--:--</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">🛣️ To go</div>
+          <div class="stat-value" id="dist">--</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">🕐 Trip time</div>
+          <div class="stat-value" id="elapsed">0:00</div>
+        </div>
+      </div>
+
+      <p id="trip-status" class="status" role="status"></p>
+      <button id="stop-btn" type="button" class="secondary">🔄 New trip</button>
+    </section>
+
+    <!-- Screen 3: WE'RE THERE! -->
+    <section id="screen-arrived" class="screen">
+      <div id="confetti" aria-hidden="true"></div>
+      <div class="arrived-emoji" aria-hidden="true">🎉</div>
+      <h1 class="yes">YES!!!</h1>
+      <p class="arrived-sub">We're there! 🥳</p>
+      <p class="arrived-detail" id="arrived-detail"></p>
+      <button id="again-btn" type="button">🚗 Start a new trip</button>
+    </section>
+
+  </main>
+  <script src="app.js?v=2"></script>
+</body>
+</html>

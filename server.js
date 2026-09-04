@@ -238,6 +238,154 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+// ---------------------------------------------------------------------------
+// "Are We There Yet?" — kids' GPS trip tracker (static app + tiny API proxies).
+// The proxies exist because the site's CSP (helmet) only allows connect-src
+// 'self': the browser talks to us, and we talk to Nominatim (geocoding) and
+// OSRM (driving routes/ETA). No API keys required for either service.
+// ---------------------------------------------------------------------------
+app.get("/are-we-there-yet", (_req, res) => res.redirect(302, "/awty/"));
+// The app is tiny; disable caching entirely so phones always get the latest
+// version instead of freezing on a stale app.js after a deploy.
+app.use(
+  "/awty",
+  express.static(path.join(__dirname, "public-awty"), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-store, must-revalidate"),
+  })
+);
+
+const awtyLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30, // route refreshes every 30s per trip + a few searches — plenty
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "rate_limited" },
+});
+
+const AWTY_UA = "katzrin.ai are-we-there-yet (contact: site admin)";
+
+// Optional Google Maps upgrade: when GOOGLE_MAPS_API_KEY is set, search uses
+// Google Places and ETAs use Google Routes with LIVE TRAFFIC (Waze-grade).
+// Without it — or if Google errors — everything falls back to Nominatim/OSRM.
+const GMAPS_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
+
+// GET /awty/api/geocode?q=... → [{ name, lat, lon }]
+app.get("/awty/api/geocode", awtyLimiter, async (req, res) => {
+  const q = String(req.query.q || "").trim().slice(0, 200);
+  if (!q) return res.status(400).json({ error: "missing_query" });
+
+  if (GMAPS_KEY) {
+    try {
+      const r = await fetch("https://places.googleapis.com/v1/places:searchText", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": GMAPS_KEY,
+          "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.location",
+        },
+        body: JSON.stringify({ textQuery: q, languageCode: "en" }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const places = (data.places || [])
+          .slice(0, 6)
+          .map((p) => ({
+            name: [p.displayName?.text, p.formattedAddress].filter(Boolean).join(", "),
+            lat: p.location?.latitude,
+            lon: p.location?.longitude,
+          }))
+          .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon));
+        if (places.length) return res.json(places);
+      } else {
+        console.error("google places error:", r.status, (await r.text().catch(() => "")).slice(0, 300));
+      }
+    } catch (err) {
+      console.error("google places error:", err?.message || err);
+    }
+    // fall through to Nominatim
+  }
+
+  try {
+    const url =
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=en,he&q=" +
+      encodeURIComponent(q);
+    const r = await fetch(url, { headers: { "User-Agent": AWTY_UA } });
+    if (!r.ok) throw new Error(`nominatim ${r.status}`);
+    const places = await r.json();
+    res.json(
+      places.map((p) => ({
+        name: p.display_name,
+        lat: parseFloat(p.lat),
+        lon: parseFloat(p.lon),
+      }))
+    );
+  } catch (err) {
+    console.error("awty geocode error:", err?.message || err);
+    res.status(502).json({ error: "geocode_failed" });
+  }
+});
+
+// GET /awty/api/route?from=lat,lon&to=lat,lon → { durationSec, distanceMeters }
+app.get("/awty/api/route", awtyLimiter, async (req, res) => {
+  const parse = (s) => {
+    const [lat, lon] = String(s || "").split(",").map(Number);
+    return Number.isFinite(lat) && Number.isFinite(lon) &&
+      Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
+  };
+  const from = parse(req.query.from);
+  const to = parse(req.query.to);
+  if (!from || !to) return res.status(400).json({ error: "bad_coordinates" });
+
+  if (GMAPS_KEY) {
+    try {
+      const r = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": GMAPS_KEY,
+          "X-Goog-FieldMask": "routes.duration,routes.distanceMeters",
+        },
+        body: JSON.stringify({
+          origin: { location: { latLng: { latitude: from.lat, longitude: from.lon } } },
+          destination: { location: { latLng: { latitude: to.lat, longitude: to.lon } } },
+          travelMode: "DRIVE",
+          routingPreference: "TRAFFIC_AWARE", // live-traffic ETA
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const route = data.routes?.[0];
+        const durationSec = parseFloat(String(route?.duration || "").replace("s", ""));
+        if (Number.isFinite(durationSec) && Number.isFinite(route?.distanceMeters)) {
+          return res.json({ durationSec, distanceMeters: route.distanceMeters, traffic: true });
+        }
+      } else {
+        console.error("google routes error:", r.status, (await r.text().catch(() => "")).slice(0, 300));
+      }
+    } catch (err) {
+      console.error("google routes error:", err?.message || err);
+    }
+    // fall through to OSRM
+  }
+
+  try {
+    const url =
+      `https://router.project-osrm.org/route/v1/driving/` +
+      `${from.lon},${from.lat};${to.lon},${to.lat}?overview=false&alternatives=false&steps=false`;
+    const r = await fetch(url, { headers: { "User-Agent": AWTY_UA } });
+    if (!r.ok) throw new Error(`osrm ${r.status}`);
+    const data = await r.json();
+    const route = data.routes?.[0];
+    if (data.code !== "Ok" || !route) return res.status(404).json({ error: "no_route" });
+    res.json({ durationSec: route.duration, distanceMeters: route.distance, traffic: false });
+  } catch (err) {
+    console.error("awty route error:", err?.message || err);
+    res.status(502).json({ error: "route_failed" });
+  }
+});
+
 app.post("/api/chat", dayLimiter, chatLimiter, async (req, res) => {
   try {
     // Block direct-to-origin abuse (bypasses Cloudflare's limits). Dormant until
