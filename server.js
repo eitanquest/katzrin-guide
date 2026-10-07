@@ -178,6 +178,50 @@ async function isOnTopic(message, history) {
 // ---------------------------------------------------------------------------
 const app = express();
 app.set("trust proxy", 1); // correct client IPs behind a proxy (Railway, etc.)
+
+// ---------------------------------------------------------------------------
+// katzrin.ai/form → the AI intake questionnaire (separate Railway service).
+// Reverse-proxied so the URL stays on katzrin.ai. Mounted BEFORE helmet and the
+// 16kb JSON cap: the questionnaire posts long answers and 25MB audio uploads,
+// which are streamed through untouched and never parsed here.
+// ---------------------------------------------------------------------------
+const FORM_UPSTREAM = (process.env.FORM_UPSTREAM || "https://web-production-1c243.up.railway.app").replace(/\/$/, "");
+app.get("/form", (req, res, next) => {
+  if (req.path !== "/form") return next(); // "/form/" falls through to the proxy below
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/form/" + q);
+});
+app.use("/form", async (req, res) => {
+  try {
+    const target = FORM_UPSTREAM + req.url; // req.url is already relative to /form
+    const headers = {};
+    for (const h of ["content-type", "content-length", "accept", "accept-language", "user-agent"]) {
+      if (req.headers[h]) headers[h] = req.headers[h];
+    }
+    headers["x-forwarded-for"] = req.get("cf-connecting-ip") || req.ip;
+    headers["x-forwarded-proto"] = "https";
+    headers["x-forwarded-host"] = req.hostname;
+    const hasBody = !["GET", "HEAD"].includes(req.method);
+    const upstream = await fetch(target, {
+      method: req.method,
+      headers,
+      body: hasBody ? req : undefined,
+      duplex: hasBody ? "half" : undefined,
+      redirect: "manual",
+    });
+    res.status(upstream.status);
+    for (const h of ["content-type", "content-length", "cache-control", "location"]) {
+      const v = upstream.headers.get(h);
+      if (v) res.setHeader(h, h === "location" ? v.replace(FORM_UPSTREAM, "/form") : v);
+    }
+    if (!upstream.body) return res.end();
+    const { Readable } = await import("node:stream");
+    Readable.fromWeb(upstream.body).pipe(res);
+  } catch (err) {
+    console.error("form proxy error:", err?.message || err);
+    res.status(502).send("Form temporarily unavailable.");
+  }
+});
 // CSP/COEP off so the marketing site's inline styles/scripts, Google Fonts and
 // YouTube embed render; other helmet protections stay on.
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
