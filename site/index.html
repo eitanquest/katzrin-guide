@@ -1637,6 +1637,7 @@
     function clear(){ timers.forEach(clearTimeout); timers = []; }
     function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
     if(reduce){ chat.classList.add('s-user','s-work','s-done'); chips.forEach(c=>c.classList.add('on')); return; }
+    if(window.matchMedia('(min-width:901px)').matches) return; // desktop: scroll-driven pill flight runs the chat
     function cycle(){
       clear();
       chat.classList.remove('s-user','s-work','s-done','s-collapsed');
@@ -1728,6 +1729,78 @@
     });
   }
   fit(); window.addEventListener('resize',fit); window.addEventListener('load',fit);
+})();
+</script>
+
+<style>
+  #flightLayer{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+  #flightLayer .scard.fly{position:fixed;left:0;top:0;inset-inline:auto;margin:0;opacity:0;will-change:transform,opacity}
+  .scard.consumed{visibility:hidden}
+</style>
+<script>
+/* Pill flight: the inbox-storm pills travel down the page and land inside the
+   Claude CoWork window, turning chaos into the finished morning brief. Scroll-driven. */
+(function(){
+  if(!window.matchMedia('(min-width:901px)').matches) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var storm=document.querySelector('.storm'), vis=document.querySelector('.idea-visual'), chat=document.getElementById('cwChat');
+  var cards=Array.prototype.slice.call(document.querySelectorAll('.storm .scard'));
+  if(!storm||!vis||!chat||!cards.length) return;
+  var layer=document.createElement('div'); layer.id='flightLayer'; layer.setAttribute('aria-hidden','true'); document.body.appendChild(layer);
+  var chips=chat.querySelectorAll('.cw-chip'), lines=chat.querySelectorAll('.cw-res-line');
+  // pill -> where it lands, arrival order (delay)
+  var MAP={'s-mail':{t:function(){return chips[0].querySelector('.ci')},d:0,s:.55},
+           's-inv':{t:function(){return chips[1].querySelector('.ci')},d:.07,s:.55},
+           's-wa':{t:function(){return chips[2].querySelector('.ci')},d:.14,s:.55},
+           's-call':{t:function(){return lines[1]},d:.24,s:.5},
+           's-cal':{t:function(){return lines[2]},d:.32,s:.5}};
+  var fl=[];
+  cards.forEach(function(c){
+    var key=Object.keys(MAP).filter(function(k){return c.classList.contains(k)})[0]; if(!key) return;
+    var cl=c.cloneNode(true); cl.removeAttribute('style'); cl.classList.add('fly'); layer.appendChild(cl);
+    fl.push({o:c,c:cl,m:MAP[key],rot:parseFloat(c.dataset.rot)||0,dx:parseFloat(c.dataset.dx)||0});
+  });
+  function cl01(v){return v<0?0:v>1?1:v}
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+  var lastP=-1, state='';
+  function frame(){
+    var sy=window.scrollY, vh=window.innerHeight;
+    var sr=storm.getBoundingClientRect(), vr=vis.getBoundingClientRect();
+    var sStart=sr.top+sy+sr.height/2-vh*.55, sEnd=vr.top+sy+vr.height/2-vh*.5;
+    if(sEnd-sStart<300) sEnd=sStart+300;
+    var p=cl01((sy-sStart)/(sEnd-sStart));
+    var raw=(sy-sStart)/(sEnd-sStart);
+    var flying=raw>0.002;
+    var allIn=flying, arrived=0;
+    for(var i=0;i<fl.length;i++){
+      var f=fl[i];
+      f.o.classList.toggle('consumed',flying);
+      if(!flying){ f.c.style.opacity=0; continue; }
+      var e=ease(cl01((p-f.m.d)/(1-.32)));
+      var orr=f.o.getBoundingClientRect(), hx=orr.left+orr.width/2, hy=orr.top+orr.height/2;
+      var tr=f.m.t().getBoundingClientRect(), tx=tr.left+tr.width/2, ty=tr.top+tr.height/2;
+      // page-space lerp: home is where the pill sat when the flight began, so it glides with the scroll
+      var hyP=hy+sy, tyP=ty+sy;
+      var yP=hyP+(tyP-hyP)*e, x=hx+(tx-hx)*e+Math.sin(Math.PI*e)*f.dx*4;
+      var y=yP-sy;
+      var sc=1+(f.m.s-1)*e, rot=f.rot*(1-e);
+      var op=e<.9?1:1-(e-.9)/.1;
+      var w=f.c.offsetWidth, h=f.c.offsetHeight;
+      f.c.style.transform='translate3d('+(x-w/2).toFixed(1)+'px,'+(y-h/2).toFixed(1)+'px,0) rotate('+rot.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
+      f.c.style.opacity=op<0?0:op.toFixed(2);
+      var done=e>=.995; if(done) arrived++; else allIn=false;
+    }
+    // CoWork chat driven by the pills
+    chat.classList.toggle('s-user',p>.12);
+    chat.classList.toggle('s-work',p>.3);
+    chat.classList.toggle('s-done',flying&&allIn);
+    fl.forEach(function(f){
+      var idx=f.o.classList.contains('s-mail')?0:f.o.classList.contains('s-inv')?1:f.o.classList.contains('s-wa')?2:-1;
+      if(idx>=0){ var ei=ease(cl01((p-f.m.d)/(1-.32))); chips[idx].classList.toggle('on',flying&&ei>=.97); }
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
