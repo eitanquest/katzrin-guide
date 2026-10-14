@@ -377,6 +377,10 @@
   .case-video .cv-note{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted)}
   .case-video video,.case-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+  .case-shorts{margin-top:18px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  .case-shorts .short{position:relative;flex:1 1 240px;max-width:340px;aspect-ratio:9/16;background:var(--paper);
+    border:1px solid var(--rule);box-shadow:var(--shadow);overflow:hidden}
+  .case-shorts iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 
   
   @media (prefers-reduced-motion: reduce){ .scard{transition:none} }
@@ -948,6 +952,11 @@
 
     <div class="case-video">
       <iframe src="https://www.youtube-nocookie.com/embed/D3C1xKIJWMc" title="Case study video" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+    <div class="case-shorts">
+      <div class="short"><iframe src="https://www.youtube-nocookie.com/embed/R8cLE3bxBbA" title="Short video 1" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy"></iframe></div>
+      <div class="short"><iframe src="https://www.youtube-nocookie.com/embed/YF2JykoF3HQ" title="Short video 2" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy"></iframe></div>
     </div>
 
     <div class="agents">
