@@ -272,7 +272,22 @@ app.use("/chat", (_req, res, next) => {
 });
 app.use("/chat", express.static(path.join(__dirname, "public")));
 // Language-specific entry points for the marketing site (path drives language).
-app.get(["/he", "/en"], (_req, res) => res.sendFile(path.join(__dirname, "site", "index.html")));
+const SITE_HTML = fs.readFileSync(path.join(__dirname, "site", "index.html"), "utf8");
+// /en gets English social-share tags (WhatsApp/Facebook scrapers don't run JS).
+const SITE_HTML_EN = SITE_HTML
+  .replace(/<title>[\s\S]*?<\/title>/, "<title>Custom AI Helpers for Business | Katzrin.AI</title>")
+  .replace(/(<meta name="description" content=")[^"]*"/, '$1Katzrin.AI builds custom AI helpers that know how you work and work for you, taking the grinding tasks off your plate. Claude adoption, automation and AI for businesses across Israel."')
+  .replace(/(<meta property="og:title" content=")[^"]*"/, '$1Katzrin.AI — AI helpers that know how you work"')
+  .replace(/(<meta property="og:description" content=")[^"]*"/, '$1Custom-built AI helpers that know how you work — and work for you. Get your time back."')
+  .replace(/(<meta name="twitter:title" content=")[^"]*"/, '$1Katzrin.AI — AI helpers that know how you work"')
+  .replace(/(<meta name="twitter:description" content=")[^"]*"/, '$1Custom-built AI helpers that know how you work — and work for you."')
+  .replace(/(og:image:alt" content=")[^"]*"/, '$1Katzrin.AI — custom AI helpers for business"')
+  .replace(/og-image-he\.png/g, "og-image-en.png")
+  .replace('<meta property="og:url" content="https://katzrin.ai/" />', '<meta property="og:url" content="https://katzrin.ai/en" />')
+  .replace('<meta property="og:locale" content="he_IL" />', '<meta property="og:locale" content="en_US" />')
+  .replace('<meta property="og:locale:alternate" content="en_US" />', '<meta property="og:locale:alternate" content="he_IL" />');
+app.get("/en", (_req, res) => res.type("html").send(SITE_HTML_EN));
+app.get("/he", (_req, res) => res.type("html").send(SITE_HTML));
 // Marketing website (Katzrin.AI) at the root (katzrin.ai/).
 app.use(express.static(path.join(__dirname, "site")));
 
